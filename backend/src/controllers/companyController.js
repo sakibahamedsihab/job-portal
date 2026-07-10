@@ -6,10 +6,13 @@ const createCompany = async (req, res) => {
 
     const db = getDB();
 
+    const recruiterId = req.user.id;
+
     const payload = {
       name,
       website,
       description,
+      recruiterId,
       createdAt: new Date(),
     };
 
