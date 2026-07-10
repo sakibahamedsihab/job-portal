@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Utensils, LayoutGrid } from "lucide-react";
+import { redirect, useRouter } from "next/navigation";
+import { LayoutGrid } from "lucide-react";
+import { signIn } from "@/lib/auth-client";
+import { email } from "better-auth";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [formdata, setFormData] = useState({
     email: "",
     password: "",
@@ -16,10 +21,22 @@ export default function LoginPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Button clicked!");
-    console.log(formdata);
+
+    const { data, error } = await signIn.email({
+      email: formdata.email,
+      password: formdata.password,
+    });
+
+    if (error) {
+      console.error("Login failed: ", error.message);
+      alert("Failed to Login");
+    } else {
+      console.log("Welcome Back!", data);
+      router.push("/");
+    }
   };
 
   return (
