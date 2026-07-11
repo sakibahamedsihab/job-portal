@@ -59,7 +59,23 @@ const getCompanies = async (req, res) => {
   }
 };
 
+const getMyCompnay = async (req, res) => {
+  try {
+    const db = getDB();
+
+    const recruiterId = req.user.id;
+
+    const company = await db.collection("companies").findOne({ recruiterId });
+
+    res.status(200).json({ success: true, company: company || null });
+  } catch (error) {
+    console.error("Error fetching my company: ", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createCompany,
   getCompanies,
+  getMyCompnay,
 };

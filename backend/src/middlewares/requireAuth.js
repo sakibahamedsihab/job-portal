@@ -5,7 +5,7 @@ const requireAuth = (req, res, next) => {
 
   // Dummy User
   req.user = {
-    id: "recruiter_dummy_101",
+    id: "recruiter_dummy_102",
     email: "recruiter@test.com",
     role: "recruiter",
   };
