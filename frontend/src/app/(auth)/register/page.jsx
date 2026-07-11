@@ -53,7 +53,7 @@ export default function RegisterPage() {
           </h1>
         </div>
 
-        <div className="border border-gray-200 rounded-lg p-8">
+        <div className="border border-gray-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
@@ -64,7 +64,7 @@ export default function RegisterPage() {
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                className="w-full border border-gray-300  px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
                 required
               />
             </div>
@@ -78,7 +78,7 @@ export default function RegisterPage() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                className="w-full border border-gray-300  px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
                 required
               />
             </div>
@@ -92,14 +92,14 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                className="w-full border border-gray-300  px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-black text-white text-sm font-bold uppercase tracking-wide rounded-md py-3 hover:bg-gray-800 transition-colors"
+              className="w-full bg-black text-white text-sm font-bold uppercase tracking-wide  py-3 hover:bg-gray-800 transition-colors"
             >
               Sign Up
             </button>
@@ -113,7 +113,7 @@ export default function RegisterPage() {
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
-          <button className="w-full border border-gray-300 rounded-md py-3 flex items-center justify-center gap-3 text-sm font-semibold text-black hover:bg-gray-50 transition-colors">
+          <button className="w-full border border-gray-300  py-3 flex items-center justify-center gap-3 text-sm font-semibold text-black hover:bg-gray-50 transition-colors">
             <LayoutGrid size={16} />
             Sign Up With Google
           </button>

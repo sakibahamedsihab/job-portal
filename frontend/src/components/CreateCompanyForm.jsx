@@ -1,0 +1,112 @@
+// src/components/CreateCompanyForm.jsx
+"use client";
+
+import { useState } from "react";
+// তোমার সার্ভিস ফাইলটা ইম্পোর্ট করে নাও
+import { createCompanyService } from "@/lib/companies";
+
+export default function CreateCompanyForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    website: "",
+    description: "",
+  });
+
+  // লোডিং স্টেটের জন্য
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // বাটন লোডিং শুরু
+
+    try {
+      // ব্যাকএন্ডে ডাটা পাঠানো হচ্ছে
+      const response = await createCompanyService(formData);
+
+      if (response.success) {
+        alert("Company Created Successfully!");
+        // ফর্মটা ক্লিয়ার করে দেওয়া
+        setFormData({ name: "", website: "", description: "" });
+      } else {
+        alert(response.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to connect to the server.");
+    } finally {
+      setIsLoading(false); // কাজ শেষে লোডিং বন্ধ
+    }
+  };
+
+  return (
+    <div className="border border-gray-200 p-8 sm:p-10 w-full max-w-md bg-white">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Company Name */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+            Company Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black"
+          />
+        </div>
+
+        {/* Website URL */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+            Website URL
+          </label>
+          <input
+            type="url"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black"
+          />
+        </div>
+
+        {/* Description */}
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+            Description
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows="4"
+            required
+            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black resize-none"
+          ></textarea>
+        </div>
+
+        {/* Submit Button */}
+        <div className="pt-4">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full bg-black text-white font-bold text-sm uppercase py-4 rounded-none transition-colors tracking-widest ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
+            }`}
+          >
+            {isLoading ? "Saving..." : "Save Company"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}

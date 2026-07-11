@@ -8,6 +8,17 @@ const createCompany = async (req, res) => {
 
     const recruiterId = req.user.id;
 
+    const existCompany = await db
+      .collection("companies")
+      .findOne({ recruiterId });
+
+    if (existCompany) {
+      return res.status(400).json({
+        success: false,
+        message: "You already have a registered compnay. You cannot create one",
+      });
+    }
+
     const payload = {
       name,
       website,
