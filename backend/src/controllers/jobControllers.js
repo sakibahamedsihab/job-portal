@@ -1,4 +1,5 @@
 const { getDB } = require("../config/db.js");
+const { ObjectId } = require("mongodb");
 
 const createJob = async (req, res) => {
   try {
@@ -57,7 +58,50 @@ const getMyJobs = async (req, res) => {
   }
 };
 
+const getJobs = async (req, res) => {
+  try {
+    const db = getDB();
+
+    const jobs = await db.collection("jobs").find().toArray();
+
+    res.status(200).json({
+      success: true,
+      jobs: jobs,
+    });
+  } catch (error) {
+    console.error("Error fetching jobs: ", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const getJobById = async (req, res) => {
+  try {
+    const db = getDB();
+    const { id } = req.params;
+    
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "Invalid Job ID format" });
+    }
+
+    const job = await db.collection("jobs").findOne({ _id: new ObjectId(id) });
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      job: job,
+    });
+  } catch (error) {
+    console.error("Error fetching job by ID: ", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createJob,
   getMyJobs,
+  getJobs,
+  getJobById,
 };

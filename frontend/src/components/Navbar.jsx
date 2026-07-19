@@ -48,6 +48,13 @@ export default function Navbar() {
                 Welcome, {session.user.name}
               </span>
 
+              <Link
+                href="/dashboard/recruiter"
+                className="text-xs font-bold text-black hover:text-gray-500 uppercase tracking-widest transition-colors"
+              >
+                Dashboard
+              </Link>
+
               <button
                 onClick={handleLogout}
                 className="bg-red-50 text-red-600 text-sm font-bold px-4 py-2 hover:bg-red-100 transition-colors"

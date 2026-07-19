@@ -29,7 +29,42 @@ const getMyJobsService = async () => {
   }
 };
 
+const getJobsService = async () => {
+  try {
+    const response = await fetch(API_URL);
+
+    if (!response.ok) {
+      return { success: false, Jobs: null };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error Fetching Jobs: ", error);
+    return { success: false, Jobs: null };
+  }
+};
+
+const getJobByIdService = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return { success: false, job: null };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error Fetching Job by ID: ", error);
+    return { success: false, job: null };
+  }
+};
+
+
 module.exports = {
   createJobService,
   getMyJobsService,
+  getJobsService,
+  getJobByIdService,
 };
