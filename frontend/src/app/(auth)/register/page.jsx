@@ -24,7 +24,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Ready for Better Auth Sign Up:", formData);
-    // এখানেই আমরা Better Auth-এর signUp ফাংশনটা কল করব!
     const { data, error } = await signUp.email({
       email: formData.email,
       password: formData.password,
@@ -37,7 +36,7 @@ export default function RegisterPage() {
     } else {
       console.log("User created successfully:", data);
       alert("Registration Successful!");
-      router.push("/dashboard");
+      router.push("/dashboard/recruiter");
     }
   };
 

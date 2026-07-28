@@ -14,7 +14,6 @@ export default function CompanyDisplay({ company }) {
         </h1>
       </div>
 
-      {/* 🛑 যদি কোম্পানি না থাকে (Centered Button) */}
       {!company ? (
         <div className="flex flex-col items-center justify-center min-h-[50vh] border border-gray-200 bg-gray-50 p-10">
           <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6">
@@ -28,8 +27,7 @@ export default function CompanyDisplay({ company }) {
           </Link>
         </div>
       ) : (
-        /* ✅ যদি কোম্পানি থাকে (Company Details Card) */
-        <div className="border border-gray-200 p-8 sm:p-12 w-full max-w-3xl bg-white space-y-8">
+        <div className="border border-gray-200 p-8 sm:p-12 w-full max-w-3xl mx-auto bg-white space-y-8">
           <div>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
               Company Name

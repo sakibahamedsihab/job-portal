@@ -1,13 +1,11 @@
 // jsonwebtoken
 
 const requireAuth = (req, res, next) => {
-  // MOCK AUTHENTICATION
-
   // Dummy User
   req.user = {
-    id: "recruiter_dummy_101",
+    id: "recruiter_dummy_501",
     email: "recruiter@test.com",
-    role: "recruiter",
+    role: "seeker",
   };
 
   console.log("[Mock Auth] Dummy user attached to request.");

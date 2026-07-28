@@ -24,6 +24,7 @@ const createJob = async (req, res) => {
       description,
       recruiterId,
       companyId: company._id,
+      companyName: company.name,
       createdAt: new Date(),
     };
 
@@ -78,7 +79,7 @@ const getJobById = async (req, res) => {
   try {
     const db = getDB();
     const { id } = req.params;
-    
+
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ success: false, message: "Invalid Job ID format" });
     }

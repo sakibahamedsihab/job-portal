@@ -4,6 +4,7 @@ export default function JobCard({ job }) {
   return (
     <div className="bg-white p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer">
       <h2 className="text-xl font-bold text-gray-800">{job.title}</h2>
+      <h2>{job.companyName}</h2>
       <p className="text-gray-600 font-medium">
         {job.company} {job.location}
       </p>

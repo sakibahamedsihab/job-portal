@@ -28,13 +28,13 @@ export default function Navbar() {
         </Link>
 
         {/* Right Side: Navigation & Auth Buttons */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-20">
           {/* Find Jobs সবার জন্য ওপেন, তাই কন্ডিশনের বাইরে */}
           <Link
             href="/jobs"
             className="text-sm font-semibold text-gray-700 hover:text-black transition-colors"
           >
-            Find Jobs
+            FIND JOBS
           </Link>
 
           {/* 3-Step Conditional Rendering */}
@@ -43,14 +43,14 @@ export default function Navbar() {
               Loading...
             </span>
           ) : session ? (
-            <div className="flex items-center gap-6">
-              <span className="text-sm font-bold text-gray-800">
+            <div className="flex justify-between items-center gap-6">
+              <span className="text-sm font-bold text-gray-800 uppercase">
                 Welcome, {session.user.name}
               </span>
 
               <Link
                 href="/dashboard/recruiter"
-                className="text-xs font-bold text-black hover:text-gray-500 uppercase tracking-widest transition-colors"
+                className="text-sm font-bold text-black hover:text-gray-500 uppercase tracking-widest transition-colors"
               >
                 Dashboard
               </Link>
