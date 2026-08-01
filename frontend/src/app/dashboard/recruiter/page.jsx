@@ -1,10 +1,15 @@
 // src/app/dashboard/recruiter/page.jsx
-
+import { cookies } from "next/headers";
 import { getMyJobsService } from "@/lib/jobs";
 
 export default async function RecruiterOverviewPage() {
-  const jobs = await getMyJobsService();
-  console.log(jobs.jobs);
+  // Forward the browser cookie to the backend so requireAuth can validate it
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+
+  const result = await getMyJobsService(cookieHeader);
+  const jobs = result?.jobs ?? [];
+
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen">
       {/* Header Section */}
@@ -25,7 +30,7 @@ export default async function RecruiterOverviewPage() {
             Total Jobs Posted
           </p>
           <h2 className="text-6xl font-extrabold text-black">
-            {jobs.jobs.length}
+            {jobs.length}
           </h2>
         </div>
 

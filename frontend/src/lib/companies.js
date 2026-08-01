@@ -1,14 +1,14 @@
 // src/lib/companies.js
-
-import { success } from "better-auth";
+// credentials: "include" is required on auth-protected routes
+// so the browser forwards the better-auth.session_token cookie to the Express backend.
 
 const API_URL = "http://localhost:5000/api/companies";
 
-// POST: নতুন কোম্পানি তৈরি করার সার্ভিস
 export const createCompanyService = async (companyData) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
+      credentials: "include", // send cookie to backend
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,11 +22,11 @@ export const createCompanyService = async (companyData) => {
   }
 };
 
-// GET: ডাটাবেস থেকে সব কোম্পানি তুলে আনার সার্ভিস
 export const getCompaniesService = async () => {
   try {
     const response = await fetch(API_URL, {
       method: "GET",
+      cache: "no-store",
     });
 
     return await response.json();
@@ -40,6 +40,7 @@ export const getMyCompanyService = async () => {
   try {
     const response = await fetch(`${API_URL}/me`, {
       cache: "no-store",
+      credentials: "include", // send cookie to backend
     });
 
     if (!response.ok) {

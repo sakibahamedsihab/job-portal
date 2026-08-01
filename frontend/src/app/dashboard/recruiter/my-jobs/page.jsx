@@ -1,9 +1,13 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { getMyJobsService } from "@/lib/jobs";
 
 export default async function MyJobsPage() {
-  const response = await getMyJobsService();
-  const jobs = response?.jobs || [];
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
+
+  const response = await getMyJobsService(cookieHeader);
+  const jobs = response?.jobs ?? [];
 
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen pb-20">
