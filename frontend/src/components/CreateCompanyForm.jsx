@@ -2,18 +2,20 @@
 "use client";
 
 import { useState } from "react";
-// তোমার সার্ভিস ফাইলটা ইম্পোর্ট করে নাও
+import { useRouter } from "next/navigation";
 import { createCompanyService } from "@/lib/companies";
 
 export default function CreateCompanyForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     website: "",
     description: "",
   });
 
-  // লোডিং স্টেটের জন্য
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,34 +23,53 @@ export default function CreateCompanyForm() {
       ...prev,
       [name]: value,
     }));
+    if (errorMessage) setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // বাটন লোডিং শুরু
+    setIsLoading(true);
+    setErrorMessage("");
+    setSuccessMessage("");
 
     try {
-      // ব্যাকএন্ডে ডাটা পাঠানো হচ্ছে
       const response = await createCompanyService(formData);
 
       if (response.success) {
-        alert("Company Created Successfully!");
-        // ফর্মটা ক্লিয়ার করে দেওয়া
+        setSuccessMessage("Company profile created successfully!");
         setFormData({ name: "", website: "", description: "" });
+        setTimeout(() => {
+          router.push("/dashboard/recruiter/my-company");
+          router.refresh();
+        }, 1200);
       } else {
-        alert(response.message || "Something went wrong!");
+        setErrorMessage(response.message || "Something went wrong!");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to connect to the server.");
+      setErrorMessage("Failed to connect to the server.");
     } finally {
-      setIsLoading(false); // কাজ শেষে লোডিং বন্ধ
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="border border-gray-200 p-8 sm:p-10 w-full max-w-md bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Success Banner */}
+        {successMessage && (
+          <div className="p-4 border-2 border-green-500 bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider">
+            ✓ {successMessage}
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {errorMessage && (
+          <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+            {errorMessage}
+          </div>
+        )}
+
         {/* Company Name */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">

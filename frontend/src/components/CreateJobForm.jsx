@@ -3,11 +3,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createJobService } from "@/lib/jobs"; // তোমার বানানো সার্ভিস
+import { createJobService } from "@/lib/jobs";
 
 export default function CreateJobForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [jobData, setJobData] = useState({
     title: "",
     location: "",
@@ -21,25 +22,26 @@ export default function CreateJobForm() {
       ...prev,
       [name]: value,
     }));
+    if (errorMessage) setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
       const response = await createJobService(jobData);
 
       if (response.success) {
-        // সাকসেস হলে my-jobs পেজে পাঠিয়ে দাও
         router.push("/dashboard/recruiter/my-jobs");
         router.refresh();
       } else {
-        alert(response.message || "Failed to post job.");
+        setErrorMessage(response.message || "Failed to post job. Please ensure you have created a company profile first.");
       }
     } catch (error) {
       console.error("Error submitting job:", error);
-      alert("Failed to connect to the server.");
+      setErrorMessage("Failed to connect to the server. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +49,13 @@ export default function CreateJobForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Error Feedback Banner */}
+      {errorMessage && (
+        <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+          {errorMessage}
+        </div>
+      )}
+
       {/* Job Title */}
       <div className="space-y-2">
         <label className="block text-xs font-bold text-black uppercase tracking-wider">

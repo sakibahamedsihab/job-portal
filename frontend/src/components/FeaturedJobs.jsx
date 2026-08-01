@@ -1,44 +1,43 @@
 "use client";
 
+// src/components/FeaturedJobs.jsx
+//
+// Dynamic Featured Jobs section on Homepage
+// Fetches real jobs from backend GET /api/jobs and displays top 4 jobs.
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, MapPin, DollarSign } from "lucide-react";
+import { getJobsService } from "@/lib/jobs";
 
 export default function FeaturedJobs() {
-  const jobs = [
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "TechNova Inc.",
-      location: "Remote",
-      type: "Full-time",
-      salary: "$120k - $150k",
-    },
-    {
-      id: 2,
-      title: "Product Designer",
-      company: "Creative Studio",
-      location: "New York, NY",
-      type: "Contract",
-      salary: "$80 - $100 / hr",
-    },
-    {
-      id: 3,
-      title: "Backend Engineer",
-      company: "DataFlow Systems",
-      location: "San Francisco, CA",
-      type: "Full-time",
-      salary: "$130k - $160k",
-    },
-    {
-      id: 4,
-      title: "Marketing Manager",
-      company: "Growth Hackers",
-      location: "London, UK",
-      type: "Full-time",
-      salary: "£60k - £80k",
-    },
-  ];
+  const [jobs, setJobs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchFeatured = async () => {
+      try {
+        const res = await getJobsService();
+        if (isMounted && res?.success && Array.isArray(res.jobs)) {
+          // Take the 4 most recently posted jobs
+          setJobs(res.jobs.slice(0, 4));
+        }
+      } catch (error) {
+        console.error("Error fetching featured jobs:", error);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    fetchFeatured();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -70,7 +69,7 @@ export default function FeaturedJobs() {
               Featured Roles
             </h2>
             <p className="text-gray-600 font-medium text-lg max-w-xl">
-              Discover the latest opportunities hand-picked by our team. Find the perfect match for your career.
+              Discover the latest opportunities posted by top companies. Find your next career step.
             </p>
           </div>
           <Link
@@ -81,44 +80,75 @@ export default function FeaturedJobs() {
           </Link>
         </div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {jobs.map((job) => (
-            <motion.div
-              key={job.id}
-              variants={itemVariants}
-              className="bg-white border-2 border-black p-6 md:p-8 hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 group cursor-pointer"
+        {/* Loading state skeleton */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="bg-white border-2 border-gray-200 p-8 animate-pulse space-y-4"
+              >
+                <div className="h-6 bg-gray-200 w-3/4"></div>
+                <div className="h-4 bg-gray-100 w-1/2"></div>
+                <div className="h-4 bg-gray-100 w-full pt-4"></div>
+              </div>
+            ))}
+          </div>
+        ) : jobs.length === 0 ? (
+          <div className="bg-white border-2 border-dashed border-gray-300 p-12 text-center">
+            <p className="text-gray-500 font-bold uppercase tracking-wider mb-4">
+              No jobs posted yet. Check back soon!
+            </p>
+            <Link
+              href="/register"
+              className="inline-block bg-black text-white font-bold uppercase text-xs tracking-widest px-6 py-3"
             >
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h3 className="text-xl md:text-2xl font-bold text-black mb-2 group-hover:underline decoration-2 underline-offset-4">
-                    {job.title}
-                  </h3>
-                  <p className="text-gray-600 font-medium">{job.company}</p>
-                </div>
-                <span className="bg-gray-100 text-black text-xs font-bold uppercase tracking-wide px-3 py-1 border border-gray-200">
-                  {job.type}
-                </span>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm font-semibold text-gray-500 uppercase tracking-wide pt-4 border-t border-gray-100">
-                <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-black"></span>
-                  {job.location}
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-black"></span>
-                  {job.salary}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              Post a Job as Recruiter
+            </Link>
+          </div>
+        ) : (
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {jobs.map((job) => (
+              <Link key={job._id} href={`/jobs/${job._id}`}>
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white border-2 border-black p-6 md:p-8 hover:-translate-y-2 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 group cursor-pointer h-full flex flex-col justify-between"
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold text-black mb-2 group-hover:underline decoration-2 underline-offset-4">
+                        {job.title}
+                      </h3>
+                      <p className="text-gray-600 font-medium">
+                        {job.companyName || job.company || "Featured Company"}
+                      </p>
+                    </div>
+                    <span className="bg-gray-100 text-black text-xs font-bold uppercase tracking-wide px-3 py-1 border border-gray-200">
+                      Full-time
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm font-semibold text-gray-500 uppercase tracking-wide pt-4 border-t border-gray-100">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin size={14} className="text-black" />
+                      {job.location}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <DollarSign size={14} className="text-black" />
+                      {job.salary}
+                    </span>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </motion.div>
+        )}
 
         <div className="mt-10 md:hidden flex justify-center">
           <Link

@@ -1,13 +1,14 @@
-// src/components/CreateCompanyForm.jsx
+// src/app/dashboard/recruiter/my-company/create/CreateCompanyForm.jsx
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 👈 রাউটার ইম্পোর্ট
+import { useRouter } from "next/navigation";
 import { createCompanyService } from "@/lib/companies";
 
 export default function CreateCompanyForm() {
-  const router = useRouter(); // 👈 রাউটার ইনিশিয়ালাইজ
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     website: "",
@@ -17,26 +18,26 @@ export default function CreateCompanyForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errorMessage) setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      // lib/companies.js থেকে সার্ভিস কল
       const response = await createCompanyService(formData);
 
       if (response.success) {
-        // 👈 সাকসেস হলে নতুন ওভারভিউ পেজে রিডাইরেক্ট করে পেজ রিফ্রেশ করে দেবো
         router.push("/dashboard/recruiter/my-company");
         router.refresh();
       } else {
-        alert(response.message || "Failed to create company.");
+        setErrorMessage(response.message || "Failed to create company.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to connect to the server.");
+      setErrorMessage("Failed to connect to the server. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -45,6 +46,13 @@ export default function CreateCompanyForm() {
   return (
     <div className="border border-gray-200 p-8 sm:p-10 w-full max-w-md bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Error Banner */}
+        {errorMessage && (
+          <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+            {errorMessage}
+          </div>
+        )}
+
         {/* Company Name */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
