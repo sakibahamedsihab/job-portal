@@ -35,7 +35,11 @@ export default function LoginPage() {
       alert("Failed to Login");
     } else {
       console.log("Welcome Back!", data);
-      router.push("/");
+      // Redirect to the correct dashboard based on role
+      const role = data?.user?.role;
+      const destination =
+        role === "recruiter" ? "/dashboard/recruiter" : "/dashboard/seeker";
+      router.push(destination);
     }
   };
 

@@ -1,8 +1,21 @@
 import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:3000", // আমাদের Next.js সার্ভারের অ্যাড্রেস
+  baseURL: "http://localhost:3000",
+  plugins: [
+    // Manually declare the extra fields we added in auth.js
+    // so the client knows about them (avoids importing server-side auth.js into the browser)
+    inferAdditionalFields({
+      user: {
+        role: {
+          type: "string",
+          required: true,
+          defaultValue: "seeker",
+        },
+      },
+    }),
+  ],
 });
 
-// এখান থেকে আমরা আমাদের প্রয়োজনীয় ফাংশনগুলো এক্সপোর্ট করে নিচ্ছি
 export const { signIn, signUp, signOut, useSession } = authClient;

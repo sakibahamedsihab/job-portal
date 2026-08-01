@@ -49,7 +49,11 @@ export default function Navbar() {
               </span>
 
               <Link
-                href="/dashboard/recruiter"
+                href={
+                  session.user.role === "recruiter"
+                    ? "/dashboard/recruiter"
+                    : "/dashboard/seeker"
+                }
                 className="text-sm font-bold text-black hover:text-gray-500 uppercase tracking-widest transition-colors"
               >
                 Dashboard
