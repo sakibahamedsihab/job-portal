@@ -3,16 +3,15 @@
 // Seeker Overview — a server component that fetches real data:
 //   - The logged-in user's name (from Better Auth session, via auth.api.getSession)
 //   - Their actual number of applications (from the backend)
+//   - Their actual number of saved jobs (from the backend)
 //   - Their 3 most recent applications for the "Recent Activity" list
-//
-// Because this is a server component, we use next/headers for cookies and
-// forward them manually to the backend, just like the recruiter dashboard does.
 
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { Briefcase, Bookmark, ChevronRight } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getMyApplicationsService } from "@/lib/applications";
+import { getMySavedJobsService } from "@/lib/savedJobs";
 
 // ── Status badge colour map ──────────────────────────────────────────────────
 const STATUS_STYLES = {
@@ -25,23 +24,24 @@ const STATUS_STYLES = {
 
 export default async function SeekerDashboardOverview() {
   // ── Step 1: Get the session to read the user's name ─────────────────────────
-  // auth.api.getSession() reads the Better Auth cookie from the request headers.
-  // This gives us the logged-in user's name without an extra DB call.
   const session = await auth.api.getSession({ headers: await headers() });
   const userName = session?.user?.name ?? "there";
 
-  // ── Step 2: Fetch the seeker's applications from the backend ─────────────────
-  // We forward the cookie string so the backend can identify who is asking.
+  // ── Step 2: Fetch applications and saved jobs from backend ─────────────────
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
-  const result = await getMyApplicationsService(cookieHeader);
-  const applications = result?.applications ?? [];
+
+  const [appResult, savedResult] = await Promise.all([
+    getMyApplicationsService(cookieHeader),
+    getMySavedJobsService(cookieHeader),
+  ]);
+
+  const applications = appResult?.applications ?? [];
+  const savedJobs = savedResult?.savedJobs ?? [];
 
   // ── Step 3: Derive stats from the data ───────────────────────────────────────
-  // We only fetch applications once and compute everything from that array.
-  // This avoids multiple separate API calls.
   const totalApplied = applications.length;
-  // Show only the 3 most recent on the overview (backend already sorts newest-first)
+  const totalSaved = savedJobs.length;
   const recentApplications = applications.slice(0, 3);
 
   return (
@@ -58,11 +58,12 @@ export default async function SeekerDashboardOverview() {
       </div>
 
       {/* ── Quick Stats ─────────────────────────────────────────────────────── */}
-      {/* Each card shows one key number. Currently "Saved Jobs" has no backend
-          yet (T27 in the plan), so it shows 0 as a placeholder. */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Applied Jobs — real number from the API */}
-        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group">
+        {/* Applied Jobs */}
+        <Link
+          href="/dashboard/seeker/applied-jobs"
+          className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group"
+        >
           <div>
             <p className="text-gray-500 text-sm font-medium mb-1">Applied Jobs</p>
             <h3 className="text-3xl font-semibold text-gray-900">{totalApplied}</h3>
@@ -70,18 +71,21 @@ export default async function SeekerDashboardOverview() {
           <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
             <Briefcase size={24} strokeWidth={1.5} />
           </div>
-        </div>
+        </Link>
 
-        {/* Saved Jobs — placeholder (no backend yet) */}
-        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group">
+        {/* Saved Jobs */}
+        <Link
+          href="/dashboard/seeker/saved-jobs"
+          className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group"
+        >
           <div>
             <p className="text-gray-500 text-sm font-medium mb-1">Saved Jobs</p>
-            <h3 className="text-3xl font-semibold text-gray-900">0</h3>
+            <h3 className="text-3xl font-semibold text-gray-900">{totalSaved}</h3>
           </div>
           <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
             <Bookmark size={24} strokeWidth={1.5} />
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* ── Recent Applications ──────────────────────────────────────────────── */}
@@ -96,7 +100,7 @@ export default async function SeekerDashboardOverview() {
           </Link>
         </div>
 
-        {/* ── Empty state for "Recent Applications" ─────────────────────────── */}
+        {/* ── Empty state ───────────────────────────────────────────────────── */}
         {recentApplications.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-sm text-gray-400 mb-4">

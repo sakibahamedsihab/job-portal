@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getJobByIdService } from "@/lib/jobs";
 import ApplyButton from "@/components/ApplyButton";
+import BookmarkButton from "@/components/BookmarkButton";
 
 export default async function JobDetailsPage({ params }) {
   const { id } = await params;
@@ -8,7 +9,6 @@ export default async function JobDetailsPage({ params }) {
   const data = await getJobByIdService(id);
   const job = data?.success ? data.job : null;
 
-  // টাস্ক ২: যদি জব খুঁজে না পাওয়া যায় (null/undefined হয়), তবে একটি মেসেজ দেখাও
   if (!job) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -20,7 +20,7 @@ export default async function JobDetailsPage({ params }) {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
       <div className="max-w-3xl mx-auto bg-white p-8 shadow-sm border border-gray-200">
-        {/* ব্যাক বাটন */}
+        {/* Back button */}
         <Link
           href="/jobs"
           className="text-sm font-bold text-gray-500 hover:text-black mb-6 inline-block"
@@ -28,19 +28,19 @@ export default async function JobDetailsPage({ params }) {
           ← Back to Jobs
         </Link>
 
-        {/* জবের মূল হেডার */}
+        {/* Job Header */}
         <h1 className="text-3xl font-extrabold text-black uppercase mb-2">
           {job.title}
         </h1>
         <p className="text-lg text-gray-600 font-medium mb-4">
-          {job.company} • {job.location}
+          {job.company || job.companyName} • {job.location}
         </p>
 
         <div className="inline-block bg-gray-100 px-4 py-1.5 text-sm font-bold text-gray-700 mb-8">
           Salary: {job.salary}
         </div>
 
-        {/* জব ডেসক্রিপশন সেকশন */}
+        {/* Job Description */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-black uppercase mb-3">
             Job Description
@@ -48,7 +48,7 @@ export default async function JobDetailsPage({ params }) {
           <p className="text-gray-600 leading-relaxed">{job.description}</p>
         </div>
 
-        {/* রিকোয়ারমেন্টস সেকশন (লুপ চালিয়ে দেখাতে হবে) */}
+        {/* Requirements */}
         {job.requirements && job.requirements.length > 0 && (
           <div>
             <h3 className="text-lg font-bold text-black uppercase mb-3">
@@ -62,8 +62,13 @@ export default async function JobDetailsPage({ params }) {
           </div>
         )}
 
-        {/* Apply Button — this is a client component so it can handle the onClick and show feedback */}
-        <ApplyButton jobId={job._id.toString()} />
+        {/* Actions: Apply & Bookmark */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-10">
+          <div className="flex-1">
+            <ApplyButton jobId={job._id.toString()} />
+          </div>
+          <BookmarkButton jobId={job._id.toString()} />
+        </div>
       </div>
     </div>
   );
