@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getJobByIdService } from "@/lib/jobs";
+import ApplyButton from "@/components/ApplyButton";
 
 export default async function JobDetailsPage({ params }) {
   const { id } = await params;
@@ -61,10 +62,8 @@ export default async function JobDetailsPage({ params }) {
           </div>
         )}
 
-        {/* Apply Button */}
-        <button className="w-full bg-black text-white font-bold uppercase tracking-wide py-3 mt-10 hover:bg-gray-800 transition-colors">
-          Apply For This Job
-        </button>
+        {/* Apply Button — this is a client component so it can handle the onClick and show feedback */}
+        <ApplyButton jobId={job._id.toString()} />
       </div>
     </div>
   );
