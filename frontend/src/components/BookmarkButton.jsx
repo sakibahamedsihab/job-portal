@@ -52,10 +52,10 @@ export default function BookmarkButton({ jobId }) {
       onClick={handleToggle}
       disabled={isLoading}
       title={isSaved ? "Remove from Saved Jobs" : "Save Job"}
-      className={`px-5 py-3 border transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
+      className={`px-5 py-3.5 border rounded-xl transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap shadow-sm ${
         isSaved
-          ? "border-emerald-600 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-          : "border-gray-300 text-gray-700 hover:border-black hover:bg-gray-50"
+          ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+          : "border-gray-200 bg-white text-gray-700 hover:border-black hover:bg-gray-50"
       } ${isLoading ? "opacity-60 cursor-wait" : ""}`}
     >
       <Bookmark size={16} className={isSaved ? "fill-emerald-600" : ""} />

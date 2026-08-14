@@ -55,37 +55,37 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6 py-16">
+    <div className="min-h-screen bg-gray-50/60 flex items-center justify-center px-6 py-16">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <p className="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mb-2">
             New Here?
           </p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-black uppercase">
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
             Create An Account
           </h1>
         </div>
 
-        <div className="border border-gray-200 p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white rounded-3xl border border-gray-200 p-8 sm:p-10 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {errorMessage && (
-              <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+              <div className="p-4 border border-red-300 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider rounded-2xl">
                 {errorMessage}
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-bold tracking-wide text-black uppercase mb-3">
+              <label className="block text-xs font-bold tracking-wide text-gray-900 uppercase mb-2">
                 I am a...
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, role: "seeker" })}
-                  className={`py-3 border-2 text-xs font-bold uppercase tracking-widest transition-colors ${
+                  className={`py-3 border text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
                     formData.role === "seeker"
-                      ? "border-black bg-black text-white"
-                      : "border-gray-200 text-gray-500 hover:border-gray-400"
+                      ? "border-black bg-black text-white shadow-sm"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300"
                   }`}
                 >
                   Job Seeker
@@ -93,10 +93,10 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, role: "recruiter" })}
-                  className={`py-3 border-2 text-xs font-bold uppercase tracking-widest transition-colors ${
+                  className={`py-3 border text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
                     formData.role === "recruiter"
-                      ? "border-black bg-black text-white"
-                      : "border-gray-200 text-gray-500 hover:border-gray-400"
+                      ? "border-black bg-black text-white shadow-sm"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300"
                   }`}
                 >
                   Recruiter
@@ -105,7 +105,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
+              <label className="block text-xs font-bold tracking-wide text-gray-900 uppercase mb-2">
                 Full Name
               </label>
               <input
@@ -113,13 +113,14 @@ export default function RegisterPage() {
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                placeholder="Jane Doe"
+                className="w-full bg-gray-50/70 border border-gray-200 px-4 py-3 text-sm text-gray-900 rounded-xl focus:bg-white focus:outline-none focus:border-black transition-all"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
+              <label className="block text-xs font-bold tracking-wide text-gray-900 uppercase mb-2">
                 Email Address
               </label>
               <input
@@ -127,13 +128,14 @@ export default function RegisterPage() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                placeholder="jane@example.com"
+                className="w-full bg-gray-50/70 border border-gray-200 px-4 py-3 text-sm text-gray-900 rounded-xl focus:bg-white focus:outline-none focus:border-black transition-all"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
+              <label className="block text-xs font-bold tracking-wide text-gray-900 uppercase mb-2">
                 Password
               </label>
               <input
@@ -141,7 +143,8 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2.5 text-sm text-black focus:outline-none focus:border-black transition-colors"
+                placeholder="••••••••"
+                className="w-full bg-gray-50/70 border border-gray-200 px-4 py-3 text-sm text-gray-900 rounded-xl focus:bg-white focus:outline-none focus:border-black transition-all"
                 required
               />
             </div>
@@ -149,24 +152,24 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-black text-white text-sm font-bold uppercase tracking-wide py-3 transition-colors ${
-                isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
+              className={`w-full bg-black text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl shadow-md hover:bg-gray-800 hover:shadow-lg transition-all ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               {isLoading ? "Creating Account..." : "Sign Up"}
             </button>
           </form>
 
-          <div className="flex items-center gap-4 my-7">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide">
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-gray-100" />
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
               Or
             </span>
-            <div className="flex-1 h-px bg-gray-200" />
+            <div className="flex-1 h-px bg-gray-100" />
           </div>
 
-          <button className="w-full border border-gray-300 py-3 flex items-center justify-center gap-3 text-sm font-semibold text-black hover:bg-gray-50 transition-colors">
-            <LayoutGrid size={16} />
+          <button className="w-full border border-gray-200 py-3 rounded-xl flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
+            <LayoutGrid size={15} />
             Sign Up With Google
           </button>
         </div>

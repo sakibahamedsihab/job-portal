@@ -2,8 +2,20 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useSession } from "@/lib/auth-client";
+import { Search, PlusCircle } from "lucide-react";
 
 export default function HeroSection() {
+  const { data: session } = useSession();
+
+  const postJobHref = session
+    ? session.user.role === "recruiter"
+      ? "/dashboard/recruiter/my-jobs/create"
+      : session.user.role === "admin"
+      ? "/dashboard/admin/jobs"
+      : "/dashboard/seeker"
+    : "/register";
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -54,14 +66,16 @@ export default function HeroSection() {
         >
           <Link
             href="/jobs"
-            className="w-full sm:w-auto px-8 py-4 bg-black text-white font-bold text-lg uppercase tracking-wide border-2 border-black hover:bg-white hover:text-black transition-colors"
+            className="w-full sm:w-auto px-8 py-4 bg-black text-white font-bold text-base uppercase tracking-wider rounded-xl shadow-md hover:bg-gray-800 hover:shadow-lg transition-all flex items-center justify-center gap-2"
           >
+            <Search size={18} />
             Explore Jobs
           </Link>
           <Link
-            href="/register"
-            className="w-full sm:w-auto px-8 py-4 bg-white text-black font-bold text-lg uppercase tracking-wide border-2 border-black hover:bg-gray-100 transition-colors"
+            href={postJobHref}
+            className="w-full sm:w-auto px-8 py-4 bg-white text-gray-900 font-bold text-base uppercase tracking-wider border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 hover:border-black transition-all flex items-center justify-center gap-2"
           >
+            <PlusCircle size={18} />
             Post a Job
           </Link>
         </motion.div>

@@ -61,6 +61,10 @@ const toggleSaveJob = async (req, res) => {
       companyName: job.companyName || job.company || "Company",
       location: job.location || "Remote",
       salary: job.salary || "N/A",
+      jobType: job.jobType || "Full-Time",
+      workplaceType: job.workplaceType || "Remote",
+      experienceLevel: job.experienceLevel || "Mid-level",
+      skills: job.skills || [],
       savedAt: new Date(),
     };
 

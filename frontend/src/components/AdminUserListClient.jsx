@@ -23,7 +23,7 @@ export default function AdminUserListClient({ initialUsers = [] }) {
   };
 
   return (
-    <div className="border border-gray-200 bg-white">
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
       {users.length === 0 ? (
         <div className="p-12 text-center text-gray-400 font-bold uppercase text-xs">
           No user accounts found.
@@ -32,7 +32,7 @@ export default function AdminUserListClient({ initialUsers = [] }) {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50 text-xs font-extrabold text-black uppercase tracking-wider">
+              <tr className="border-b border-gray-100 bg-gray-50/70 text-xs font-bold text-gray-500 uppercase tracking-wider">
                 <th className="py-4 px-6">Name</th>
                 <th className="py-4 px-6">Email</th>
                 <th className="py-4 px-6">Role</th>
@@ -43,12 +43,12 @@ export default function AdminUserListClient({ initialUsers = [] }) {
               {users.map((user) => {
                 const userId = user._id || user.id;
                 return (
-                  <tr key={userId} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-4 px-6 font-bold text-black">{user.name}</td>
+                  <tr key={userId} className="hover:bg-gray-50/60 transition-colors">
+                    <td className="py-4 px-6 font-bold text-gray-900">{user.name}</td>
                     <td className="py-4 px-6 text-gray-600">{user.email}</td>
                     <td className="py-4 px-6">
                       <span
-                        className={`inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest px-3 py-1 border ${
+                        className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${
                           user.role === "admin"
                             ? "bg-purple-50 text-purple-700 border-purple-200"
                             : user.role === "recruiter"
@@ -65,9 +65,9 @@ export default function AdminUserListClient({ initialUsers = [] }) {
                         <button
                           onClick={() => handleDelete(userId, user.name)}
                           disabled={deletingId === userId}
-                          className="text-xs font-bold text-red-600 hover:text-red-800 uppercase tracking-wider flex items-center gap-1 ml-auto disabled:opacity-50"
+                          className="text-xs font-bold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg uppercase tracking-wider inline-flex items-center gap-1 disabled:opacity-50 transition-colors"
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={13} />
                           {deletingId === userId ? "Deleting..." : "Delete"}
                         </button>
                       )}

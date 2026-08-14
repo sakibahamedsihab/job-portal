@@ -11,14 +11,52 @@ function checkRecruiterRole(req, res) {
   return true;
 }
 
+function parseList(input) {
+  if (!input) return [];
+  if (Array.isArray(input)) {
+    return input.map((item) => String(item).trim()).filter(Boolean);
+  }
+  if (typeof input === "string") {
+    // If contains newlines, split by line, otherwise by commas
+    const delimiter = input.includes("\n") ? "\n" : ",";
+    return input
+      .split(delimiter)
+      .map((item) => item.trim().replace(/^[-*•\d.]\s*/, "")) // remove bullet markers if any
+      .filter(Boolean);
+  }
+  return [];
+}
+
 const createJob = async (req, res) => {
   try {
     if (!checkRecruiterRole(req, res)) return;
     
     const db = getDB();
 
-    const { title, location, salary, description } = req.body;
+    const {
+      title,
+      category,
+      jobType,
+      workplaceType,
+      experienceLevel,
+      location,
+      salary,
+      description,
+      skills,
+      responsibilities,
+      requirements,
+      benefits,
+      deadline,
+    } = req.body;
+
     const recruiterId = req.user.id;
+
+    if (!title || !location || !salary || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, location, salary, and description are required.",
+      });
+    }
 
     const company = await db.collection("companies").findOne({ recruiterId });
 
@@ -30,14 +68,24 @@ const createJob = async (req, res) => {
     }
 
     const payload = {
-      title,
-      location,
-      salary,
-      description,
+      title: title.trim(),
+      category: category ? category.trim() : "Engineering",
+      jobType: jobType ? jobType.trim() : "Full-Time",
+      workplaceType: workplaceType ? workplaceType.trim() : "Remote",
+      experienceLevel: experienceLevel ? experienceLevel.trim() : "Mid-level",
+      location: location.trim(),
+      salary: salary.trim(),
+      description: description.trim(),
+      skills: parseList(skills),
+      responsibilities: parseList(responsibilities),
+      requirements: parseList(requirements),
+      benefits: parseList(benefits),
+      deadline: deadline || null,
       recruiterId,
       companyId: company._id,
       companyName: company.name,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     const result = await db.collection("jobs").insertOne(payload);

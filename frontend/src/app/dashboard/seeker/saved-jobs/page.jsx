@@ -12,12 +12,12 @@ export default async function SavedJobsPage() {
   const savedJobs = res?.savedJobs ?? [];
 
   return (
-    <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen pb-20">
+    <div className="pt-10 px-8 sm:px-12 w-full bg-gray-50/50 min-h-screen pb-20">
       <div className="border-b border-gray-200 pb-6 mb-10">
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
           My Activity
         </p>
-        <h1 className="text-4xl font-extrabold text-black uppercase tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
           Saved Jobs
         </h1>
         <p className="text-sm text-gray-500 mt-2">
@@ -26,11 +26,11 @@ export default async function SavedJobsPage() {
       </div>
 
       {savedJobs.length === 0 ? (
-        <div className="border border-gray-200 p-16 text-center bg-gray-50 flex flex-col items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-            <Bookmark size={24} strokeWidth={1.5} />
+        <div className="bg-white rounded-3xl border border-gray-200 p-16 text-center shadow-sm flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+            <Bookmark size={28} />
           </div>
-          <h2 className="text-lg font-bold text-black uppercase tracking-wide mb-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">
             No Saved Jobs Yet
           </h2>
           <p className="text-sm font-medium text-gray-400 max-w-sm mb-6">
@@ -38,7 +38,7 @@ export default async function SavedJobsPage() {
           </p>
           <Link
             href="/jobs"
-            className="inline-block bg-black text-white text-xs font-bold uppercase tracking-widest px-6 py-3 hover:bg-gray-800 transition-colors"
+            className="inline-block bg-black text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-gray-800 transition-colors shadow-sm"
           >
             Explore Open Jobs
           </Link>
@@ -48,16 +48,16 @@ export default async function SavedJobsPage() {
           {savedJobs.map((item) => (
             <div
               key={item._id}
-              className="border border-gray-200 p-6 bg-white hover:border-black transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-7 shadow-sm hover:shadow-md hover:border-black transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
             >
               <div>
-                <h2 className="text-lg font-extrabold text-black uppercase tracking-wide">
+                <h2 className="text-lg font-bold text-gray-900">
                   {item.jobTitle}
                 </h2>
                 <p className="text-sm text-gray-600 font-medium mt-1">
                   {item.companyName} • {item.location}
                 </p>
-                <p className="text-xs text-gray-400 mt-1 uppercase tracking-wide">
+                <p className="text-xs text-gray-400 mt-1">
                   Salary: {item.salary}
                 </p>
               </div>
@@ -65,9 +65,9 @@ export default async function SavedJobsPage() {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/jobs/${item.jobId}`}
-                  className="px-4 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center gap-2"
+                  className="px-5 py-3.5 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2 shadow-sm"
                 >
-                  View Details <ExternalLink size={14} />
+                  View Role <ExternalLink size={14} />
                 </Link>
 
                 <BookmarkButton jobId={item.jobId?.toString() || item.jobId} />

@@ -53,68 +53,71 @@ export default function CreateCompanyForm() {
   };
 
   return (
-    <div className="border border-gray-200 p-8 sm:p-10 w-full max-w-md bg-white">
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8 sm:p-10 w-full max-w-md">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {successMessage && (
-          <div className="p-4 border-2 border-green-500 bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider">
+          <div className="p-4 border border-green-200 bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider rounded-2xl">
             ✓ {successMessage}
           </div>
         )}
 
         {errorMessage && (
-          <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+          <div className="p-4 border border-red-300 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider rounded-2xl">
             {errorMessage}
           </div>
         )}
 
         <div className="space-y-2">
-          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
             Company Name
           </label>
           <input
             type="text"
             name="name"
+            placeholder="e.g. Acme Corp"
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black"
+            className="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 focus:bg-white focus:outline-none focus:border-black rounded-xl text-gray-900 transition-all"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
             Website URL
           </label>
           <input
             type="url"
             name="website"
+            placeholder="https://example.com"
             value={formData.website}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black"
+            className="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 focus:bg-white focus:outline-none focus:border-black rounded-xl text-gray-900 transition-all"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-bold text-black uppercase tracking-wider">
+          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
             Description
           </label>
           <textarea
             name="description"
+            placeholder="Tell us about the company mission, culture, and team..."
             value={formData.description}
             onChange={handleChange}
             rows="4"
             required
-            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black rounded-none text-black resize-none"
+            className="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 focus:bg-white focus:outline-none focus:border-black rounded-xl text-gray-900 resize-none transition-all"
           ></textarea>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full bg-black text-white font-bold text-sm uppercase py-4 rounded-none transition-colors tracking-widest ${
-              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"
+            className={`w-full bg-black text-white font-bold text-xs uppercase py-3.5 rounded-xl shadow-md hover:bg-gray-800 hover:shadow-lg transition-all tracking-wider ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             {isLoading ? "Saving..." : "Save Company"}

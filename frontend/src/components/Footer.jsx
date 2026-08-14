@@ -13,12 +13,12 @@ export default function Footer() {
         <div className="pt-4">
           <Link
             href="/register"
-            className="inline-block px-10 py-4 bg-white text-black font-extrabold text-lg uppercase tracking-wider hover:bg-gray-200 transition-colors"
+            className="inline-block px-10 py-4 bg-white text-black font-extrabold text-sm uppercase tracking-wider rounded-2xl shadow-lg hover:bg-gray-100 hover:shadow-xl transition-all"
           >
             Get Started Now
           </Link>
         </div>
-        <div className="pt-12 text-sm text-gray-500 font-medium uppercase tracking-widest border-t border-gray-800 mt-12">
+        <div className="pt-12 text-xs text-gray-500 font-medium uppercase tracking-widest border-t border-gray-800 mt-12">
           &copy; {new Date().getFullYear()} Job Portal. All rights reserved.
         </div>
       </div>

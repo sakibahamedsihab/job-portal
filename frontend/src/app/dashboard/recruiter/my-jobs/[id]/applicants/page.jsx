@@ -55,11 +55,11 @@ export default async function JobApplicantsPage({ params }) {
   }
 
   return (
-    <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen pb-20">
+    <div className="pt-10 px-8 sm:px-12 w-full bg-gray-50/50 min-h-screen pb-20">
 
       <Link
         href="/dashboard/recruiter/my-jobs"
-        className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest flex items-center gap-2 mb-8 transition-colors"
+        className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest inline-flex items-center gap-2 mb-8 transition-colors bg-white px-4 py-2 rounded-xl border border-gray-200 shadow-sm"
       >
         <ArrowLeft size={16} /> Back to My Jobs
       </Link>
@@ -68,20 +68,20 @@ export default async function JobApplicantsPage({ params }) {
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
           Applicants List
         </p>
-        <h1 className="text-4xl font-extrabold text-black uppercase tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
           {jobTitle}
         </h1>
         <p className="text-sm text-gray-500 mt-2">
-          Total Applicants: <span className="font-bold text-black">{applicants.length}</span>
+          Total Candidates: <span className="font-bold text-gray-900">{applicants.length}</span>
         </p>
       </div>
 
       {applicants.length === 0 ? (
-        <div className="border border-gray-200 p-16 text-center bg-gray-50 flex flex-col items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mb-4">
-            <Users size={24} strokeWidth={1.5} />
+        <div className="bg-white rounded-3xl border border-gray-200 p-16 text-center shadow-sm flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+            <Users size={28} />
           </div>
-          <h2 className="text-lg font-bold text-black uppercase tracking-wide mb-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">
             No Applicants Yet
           </h2>
           <p className="text-sm font-medium text-gray-400 max-w-sm">
@@ -93,14 +93,14 @@ export default async function JobApplicantsPage({ params }) {
           {applicants.map((applicant, index) => (
             <div
               key={applicant._id || index}
-              className="border border-gray-200 p-6 bg-white hover:border-black transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-6"
+              className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-7 shadow-sm hover:shadow-md hover:border-black transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-6"
             >
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold bg-black text-white px-2 py-0.5">
+                  <span className="text-xs font-bold bg-black text-white px-2.5 py-0.5 rounded-md">
                     #{index + 1}
                   </span>
-                  <h3 className="text-lg font-extrabold text-black uppercase tracking-wide">
+                  <h3 className="text-lg font-bold text-gray-900">
                     {applicant.seekerName || "Anonymous Candidate"}
                   </h3>
                 </div>

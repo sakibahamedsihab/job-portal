@@ -210,23 +210,55 @@ async function runTestSuite() {
     });
     assert(myCompanyRes.status === 200 && myCompanyRes.body?.company?.name === "Test Corp", "Recruiter fetches own company profile");
 
-    // Post Job
+    // Post Job with rich schema
     const postJobRes = await request("/api/jobs", {
       method: "POST",
       headers: { Cookie: recruiterCookie },
       body: {
         title: "Senior Full Stack Engineer",
+        category: "Engineering",
+        jobType: "Full-Time",
+        workplaceType: "Remote",
+        experienceLevel: "Senior",
         location: "Remote",
         salary: "$120,000 - $140,000",
         description: "Develop high-scale cloud web applications.",
+        skills: ["React", "Node.js", "TypeScript", "TailwindCSS"],
+        responsibilities: [
+          "Architect frontend components and API integrations",
+          "Ensure high code quality and test coverage",
+        ],
+        requirements: [
+          "5+ years of software engineering experience",
+          "Deep expertise in modern JavaScript and TypeScript",
+        ],
+        benefits: [
+          "Unlimited Paid Time Off (PTO)",
+          "Comprehensive health and dental insurance",
+          "Annual home office stipend",
+        ],
+        deadline: "2026-12-31",
       },
     });
-    assert(postJobRes.status === 201 && postJobRes.body?.success === true, "Recruiter posts job successfully (201)");
+    assert(postJobRes.status === 201 && postJobRes.body?.success === true, "Recruiter posts job with rich schema successfully (201)");
     const createdJobId = postJobRes.body?.jobId;
 
     // Get Job by ID
     const getJobRes = await request(`/api/jobs/${createdJobId}`);
-    assert(getJobRes.status === 200 && getJobRes.body?.job?.title === "Senior Full Stack Engineer", "Get job by ID returns job details");
+    const fetchedJob = getJobRes.body?.job;
+    assert(
+      getJobRes.status === 200 &&
+        fetchedJob?.title === "Senior Full Stack Engineer" &&
+        fetchedJob?.category === "Engineering" &&
+        fetchedJob?.jobType === "Full-Time" &&
+        fetchedJob?.workplaceType === "Remote" &&
+        fetchedJob?.experienceLevel === "Senior" &&
+        Array.isArray(fetchedJob?.skills) &&
+        fetchedJob.skills.includes("TypeScript") &&
+        Array.isArray(fetchedJob?.responsibilities) &&
+        Array.isArray(fetchedJob?.benefits),
+      "Get job by ID returns complete enriched schema details"
+    );
 
     // Recruiter getMyJobs
     const myJobsRes = await request("/api/jobs/me", {

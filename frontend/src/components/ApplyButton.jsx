@@ -60,7 +60,7 @@ export default function ApplyButton({ jobId }) {
     return (
       <button
         disabled
-        className="w-full bg-gray-200 text-gray-500 font-bold uppercase text-xs tracking-wide py-3.5 animate-pulse"
+        className="w-full bg-gray-200 text-gray-500 font-bold uppercase text-xs tracking-wider py-3.5 rounded-xl animate-pulse"
       >
         Loading...
       </button>
@@ -69,8 +69,8 @@ export default function ApplyButton({ jobId }) {
 
   if (state === "applied") {
     return (
-      <div className="w-full text-center py-3 border-2 border-green-600 text-green-600 font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2">
-        <UserCheck size={16} className="fill-green-600" />
+      <div className="w-full text-center py-3.5 border border-emerald-300 bg-emerald-50 text-emerald-700 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2">
+        <UserCheck size={16} className="text-emerald-600" />
         Application Submitted!
       </div>
     );
@@ -78,8 +78,8 @@ export default function ApplyButton({ jobId }) {
 
   if (state === "duplicate") {
     return (
-      <div className="w-full text-center py-3 border-2 border-yellow-500 text-yellow-600 font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2">
-        <span>���</span> You have already applied for this job.
+      <div className="w-full text-center py-3.5 border border-amber-300 bg-amber-50 text-amber-800 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2">
+        <span>✓</span> You have already applied for this job.
       </div>
     );
   }
@@ -87,7 +87,7 @@ export default function ApplyButton({ jobId }) {
   if (state === "error") {
     return (
       <div className="w-full space-y-2">
-        <div className="text-center py-3 border-2 border-red-400 text-red-600 text-xs font-bold">
+        <div className="text-center py-3 border border-red-300 bg-red-50 text-red-600 text-xs font-bold rounded-xl">
           {message}
         </div>
         <button
@@ -105,9 +105,9 @@ export default function ApplyButton({ jobId }) {
     const Icon = roleInfo.icon;
 
     return (
-      <div className={`w-full p-4 border-2 ${roleInfo.color} rounded-lg ${roleInfo.color.replace("bg-", "bg-").replace("border-", "border-")}`}>
+      <div className={`w-full p-4 border rounded-2xl ${roleInfo.color}`}>
         <div className="flex items-center gap-3">
-          <div className={`p-2 ${roleInfo.color.replace("bg-", "bg-").replace("50", "100")} rounded-full`}>
+          <div className={`p-2 ${roleInfo.color.replace("bg-", "bg-").replace("50", "100")} rounded-xl`}>
             <Icon size={20} className={roleInfo.iconColor} />
           </div>
           <div className="flex-1 text-left">
@@ -119,7 +119,7 @@ export default function ApplyButton({ jobId }) {
           <div className="mt-3 pt-3 border-t border-current/20">
             <a
               href="/register"
-              className="w-full block text-center py-2 bg-black text-white text-xs font-bold uppercase tracking-wide hover:bg-gray-800 transition-colors"
+              className="w-full block text-center py-2.5 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-gray-800 transition-colors"
             >
               Create Seeker Account <ArrowRight size={14} className="inline ml-1" />
             </a>
@@ -133,10 +133,10 @@ export default function ApplyButton({ jobId }) {
     <button
       onClick={handleApply}
       disabled={state === "loading"}
-      className={`w-full bg-black text-white font-bold uppercase text-xs tracking-wide py-3.5 transition-colors flex items-center justify-center gap-2 ${
+      className={`w-full bg-black text-white font-bold uppercase text-xs tracking-wider py-3.5 rounded-xl transition-all shadow-sm hover:bg-gray-800 flex items-center justify-center gap-2 ${
         state === "loading"
           ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-gray-800"
+          : "hover:shadow-md"
       }`}
     >
       <Briefcase size={14} />

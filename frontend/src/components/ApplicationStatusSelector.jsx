@@ -31,10 +31,10 @@ export default function ApplicationStatusSelector({ applicationId, initialStatus
         <button
           onClick={() => handleStatusChange("accepted")}
           disabled={isAccepted || isUpdating}
-          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors ${
+          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl flex items-center gap-1.5 transition-all shadow-sm ${
             isAccepted
               ? "bg-green-100 text-green-800 border border-green-300 cursor-not-allowed"
-              : "bg-black text-white hover:bg-gray-800"
+              : "bg-black text-white hover:bg-gray-800 hover:shadow-md"
           } ${isUpdating ? "opacity-50 cursor-wait" : ""}`}
         >
           <Check size={14} />
@@ -46,10 +46,10 @@ export default function ApplicationStatusSelector({ applicationId, initialStatus
         <button
           onClick={() => handleStatusChange("rejected")}
           disabled={isRejected || isUpdating}
-          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors ${
+          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl flex items-center gap-1.5 transition-all shadow-sm ${
             isRejected
               ? "bg-red-100 text-red-800 border border-red-300 cursor-not-allowed"
-              : "border border-red-500 text-red-600 hover:bg-red-50"
+              : "border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-400"
           } ${isUpdating ? "opacity-50 cursor-wait" : ""}`}
         >
           <X size={14} />

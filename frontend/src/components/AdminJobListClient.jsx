@@ -26,36 +26,36 @@ export default function AdminJobListClient({ initialJobs = [] }) {
   return (
     <div className="space-y-4">
       {jobs.length === 0 ? (
-        <div className="border border-gray-200 p-12 text-center text-gray-400 font-bold uppercase text-xs">
+        <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center text-gray-400 font-bold uppercase text-xs shadow-sm">
           No job posts found for moderation.
         </div>
       ) : (
         jobs.map((job) => (
           <div
             key={job._id}
-            className="border-2 border-black p-6 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md hover:border-black transition-all"
           >
             <div>
-              <h2 className="text-lg font-extrabold text-black uppercase tracking-wide">
+              <h2 className="text-lg font-bold text-gray-900 mb-1">
                 {job.title}
               </h2>
-              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-gray-600 mt-1 uppercase">
+              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-gray-500">
                 <span className="flex items-center gap-1">
-                  <Building size={13} className="text-black" />
+                  <Building size={13} className="text-gray-400" />
                   {job.companyName || job.company || "Company"}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin size={13} className="text-black" />
+                  <MapPin size={13} className="text-gray-400" />
                   {job.location}
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <Link
                 href={`/jobs/${job._id}`}
                 target="_blank"
-                className="px-4 py-2 border border-black text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all flex items-center gap-1.5 shadow-sm"
               >
                 View <ExternalLink size={13} />
               </Link>
@@ -63,10 +63,10 @@ export default function AdminJobListClient({ initialJobs = [] }) {
               <button
                 onClick={() => handleDeleteJob(job._id, job.title)}
                 disabled={deletingId === job._id}
-                className="px-4 py-2 border border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider hover:bg-red-100 transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                className="px-4 py-2 border border-red-200 bg-red-50 text-red-700 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-red-100 transition-colors flex items-center gap-1.5 disabled:opacity-50 shadow-sm"
               >
                 <Trash2 size={13} />
-                {deletingId === job._id ? "Deleting..." : "Delete Job"}
+                {deletingId === job._id ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>

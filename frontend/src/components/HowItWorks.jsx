@@ -62,7 +62,7 @@ export default function HowItWorks() {
         </div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 relative"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -72,15 +72,15 @@ export default function HowItWorks() {
             <motion.div
               key={step.id}
               variants={itemVariants}
-              className="relative z-10 flex flex-col items-center"
+              className="bg-gray-900/70 border border-gray-800 rounded-3xl p-8 flex flex-col items-center text-center shadow-lg hover:border-gray-700 hover:shadow-2xl transition-all group"
             >
-              <div className="w-20 h-20 bg-white text-black flex items-center justify-center rounded-full mb-6 border-4 border-black shadow-[0_0_0_2px_rgba(255,255,255,1)]">
+              <div className="w-16 h-16 bg-white text-black flex items-center justify-center rounded-2xl mb-6 shadow-md group-hover:scale-110 transition-transform">
                 {step.icon}
               </div>
-              <h3 className="text-xl font-bold uppercase tracking-wide mb-3">
+              <h3 className="text-xl font-bold uppercase tracking-wide mb-3 text-white">
                 {step.id}. {step.title}
               </h3>
-              <p className="text-gray-400 font-medium max-w-xs text-center">
+              <p className="text-gray-400 font-medium text-sm leading-relaxed max-w-xs">
                 {step.description}
               </p>
             </motion.div>
