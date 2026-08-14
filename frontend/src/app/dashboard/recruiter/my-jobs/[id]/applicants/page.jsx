@@ -1,31 +1,9 @@
-// src/app/dashboard/recruiter/my-jobs/[id]/applicants/page.jsx
-//
-// ── RECRUITER APPLICANTS PAGE (Server Component) ────────────────────────────
-//
-// Purpose:
-//   Displays all candidates/job-seekers who applied for a specific job post
-//   and allows the recruiter to ACCEPT, REJECT, or REVIEW each application.
-//
-// Route:
-//   `/dashboard/recruiter/my-jobs/[id]/applicants`
-//   - `id`: Dynamic route parameter containing the MongoDB ObjectId of the job.
-//
-// How status updates sync across dashboards:
-//   1. Recruiter clicks Accept/Reject/Review on ApplicationStatusSelector.
-//   2. Frontend calls PATCH /api/applications/:id/status.
-//   3. Express updates the `status` field in MongoDB `applications` collection.
-//   4. When the seeker views their dashboard (/dashboard/seeker/applied-jobs),
-//      Next.js fetches the latest status live from MongoDB, displaying "Accepted",
-//      "Rejected", or "Under Review" instantly!
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { Users, Mail, Calendar, ArrowLeft } from "lucide-react";
 import { getJobApplicantsService } from "@/lib/applications";
 import ApplicationStatusSelector from "@/components/ApplicationStatusSelector";
 
-// Helper function to format application date
 function formatDate(dateString) {
   if (!dateString) return "N/A";
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -36,21 +14,17 @@ function formatDate(dateString) {
 }
 
 export default async function JobApplicantsPage({ params }) {
-  // ── Step 1: Extract dynamic route parameter `id` ───────────────────────────
   const { id } = await params;
 
-  // ── Step 2: Read session cookie for backend authentication ─────────────────
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
 
-  // ── Step 3: Fetch applicants for this specific job ──────────────────────────
   const response = await getJobApplicantsService(id, cookieHeader);
 
   const isSuccess = response?.success ?? false;
   const jobTitle = response?.jobTitle || "Job Applicants";
   const applicants = response?.applicants ?? [];
 
-  // ── Step 4: Handle Error or Unauthorized Access ────────────────────────────
   if (!isSuccess) {
     return (
       <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen">
@@ -83,7 +57,6 @@ export default async function JobApplicantsPage({ params }) {
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen pb-20">
 
-      {/* Back Navigation Link */}
       <Link
         href="/dashboard/recruiter/my-jobs"
         className="text-xs font-bold text-gray-500 hover:text-black uppercase tracking-widest flex items-center gap-2 mb-8 transition-colors"
@@ -91,7 +64,6 @@ export default async function JobApplicantsPage({ params }) {
         <ArrowLeft size={16} /> Back to My Jobs
       </Link>
 
-      {/* Page Header */}
       <div className="border-b border-gray-200 pb-6 mb-10">
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
           Applicants List
@@ -104,7 +76,6 @@ export default async function JobApplicantsPage({ params }) {
         </p>
       </div>
 
-      {/* ── Empty State: No Applicants Yet ─────────────────────────────────── */}
       {applicants.length === 0 ? (
         <div className="border border-gray-200 p-16 text-center bg-gray-50 flex flex-col items-center justify-center">
           <div className="w-12 h-12 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mb-4">
@@ -118,14 +89,12 @@ export default async function JobApplicantsPage({ params }) {
           </p>
         </div>
       ) : (
-        /* ── Applicants List ──────────────────────────────────────────────── Dynamic Candidate Cards */
         <div className="flex flex-col gap-4">
           {applicants.map((applicant, index) => (
             <div
               key={applicant._id || index}
               className="border border-gray-200 p-6 bg-white hover:border-black transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-6"
             >
-              {/* Candidate Details */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-bold bg-black text-white px-2 py-0.5">
@@ -149,7 +118,6 @@ export default async function JobApplicantsPage({ params }) {
                 </div>
               </div>
 
-              {/* Recruiter Action Controls: Accept / Reject / Review Status Selector */}
               <div>
                 <ApplicationStatusSelector
                   applicationId={applicant._id?.toString() || applicant._id}

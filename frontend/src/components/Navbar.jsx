@@ -19,7 +19,6 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-200 py-4 px-6">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        {/* Left Side: Logo */}
         <Link
           href="/"
           className="text-xl font-extrabold tracking-tight text-black uppercase"
@@ -27,9 +26,7 @@ export default function Navbar() {
           Job Portal
         </Link>
 
-        {/* Right Side: Navigation & Auth Buttons */}
         <div className="flex items-center gap-20">
-          {/* Find Jobs সবার জন্য ওপেন, তাই কন্ডিশনের বাইরে */}
           <Link
             href="/jobs"
             className="text-sm font-semibold text-gray-700 hover:text-black transition-colors"
@@ -37,7 +34,6 @@ export default function Navbar() {
             FIND JOBS
           </Link>
 
-          {/* 3-Step Conditional Rendering */}
           {isPending ? (
             <span className="text-sm text-gray-500 animate-pulse">
               Loading...
@@ -50,7 +46,9 @@ export default function Navbar() {
 
               <Link
                 href={
-                  session.user.role === "recruiter"
+                  session.user.role === "admin"
+                    ? "/dashboard/admin"
+                    : session.user.role === "recruiter"
                     ? "/dashboard/recruiter"
                     : "/dashboard/seeker"
                 }

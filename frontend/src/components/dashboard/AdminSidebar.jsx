@@ -3,20 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function SidebarNav() {
+export default function AdminSidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: "Overview", path: "/dashboard/recruiter" },
-    { name: "My Company", path: "/dashboard/recruiter/my-company" },
-    { name: "My Jobs", path: "/dashboard/recruiter/my-jobs" },
+    { name: "Overview", path: "/dashboard/admin" },
+    { name: "User Management", path: "/dashboard/admin/users" },
+    { name: "Job Moderation", path: "/dashboard/admin/jobs" },
   ];
 
   return (
     <nav className="flex flex-col pt-6">
       {navItems.map((item) => {
         const isActive =
-          item.path === "/dashboard/recruiter"
+          item.path === "/dashboard/admin"
             ? pathname === item.path
             : pathname.startsWith(item.path);
 

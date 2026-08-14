@@ -1,4 +1,3 @@
-// src/app/dashboard/recruiter/loading.jsx
 export default function RecruiterLoading() {
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen animate-pulse space-y-8">

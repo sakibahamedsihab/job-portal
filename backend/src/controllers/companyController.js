@@ -1,7 +1,19 @@
 const { getDB } = require("../config/db.js");
 
+function checkRecruiterRole(req, res) {
+  if (req.user.role !== "recruiter") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only recruiters can create company profiles.",
+    });
+  }
+  return true;
+}
+
 const createCompany = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const { name, website, description } = req.body;
 
     const db = getDB();
@@ -61,6 +73,8 @@ const getCompanies = async (req, res) => {
 
 const getMyCompnay = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const db = getDB();
 
     const recruiterId = req.user.id;

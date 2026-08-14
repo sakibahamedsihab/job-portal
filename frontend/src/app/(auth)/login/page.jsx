@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { LayoutGrid } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
-import { email } from "better-auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,10 +35,13 @@ export default function LoginPage() {
       alert("Failed to Login");
     } else {
       console.log("Welcome Back!", data);
-      // Redirect to the correct dashboard based on role
       const role = data?.user?.role;
       const destination =
-        role === "recruiter" ? "/dashboard/recruiter" : "/dashboard/seeker";
+        role === "admin"
+          ? "/dashboard/admin"
+          : role === "recruiter"
+            ? "/dashboard/recruiter"
+            : "/dashboard/seeker";
       router.push(destination);
     }
   };
@@ -117,7 +120,9 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-8">
           Don&apos;t have an account?{" "}
-          <span className="font-bold text-black cursor-pointer">Sign Up</span>
+          <Link href="/register" className="font-bold text-black hover:underline">
+            Sign Up
+          </Link>
         </p>
       </div>
     </div>

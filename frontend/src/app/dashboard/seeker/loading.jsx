@@ -1,4 +1,3 @@
-// src/app/dashboard/seeker/loading.jsx
 export default function SeekerLoading() {
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-pulse">

@@ -1,8 +1,20 @@
 const { getDB } = require("../config/db.js");
 const { ObjectId } = require("mongodb");
 
+function checkRecruiterRole(req, res) {
+  if (req.user.role !== "recruiter") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only recruiters can post jobs.",
+    });
+  }
+  return true;
+}
+
 const createJob = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const db = getDB();
 
     const { title, location, salary, description } = req.body;
@@ -44,6 +56,8 @@ const createJob = async (req, res) => {
 
 const getMyJobs = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const db = getDB();
     const recruiterId = req.user.id;
 

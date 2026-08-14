@@ -1,15 +1,5 @@
-// src/lib/applications.js
-//
-// Frontend service layer for the applications API.
-// These functions are thin wrappers around fetch() that talk to
-// the Express backend at http://localhost:5000/api/applications.
-
 const API_URL = "http://localhost:5000/api/applications";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// applyToJobService
-// Called when a SEEKER clicks "Apply" on the job detail page.
-// ─────────────────────────────────────────────────────────────────────────────
 export const applyToJobService = async (jobId) => {
   try {
     const response = await fetch(API_URL, {
@@ -28,10 +18,6 @@ export const applyToJobService = async (jobId) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getMyApplicationsService
-// Called from seeker server components (applied-jobs page, seeker overview).
-// ─────────────────────────────────────────────────────────────────────────────
 export const getMyApplicationsService = async (cookieHeader) => {
   try {
     const headers = {};
@@ -55,10 +41,6 @@ export const getMyApplicationsService = async (cookieHeader) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getJobApplicantsService
-// Called from recruiter server components (Applicants page).
-// ─────────────────────────────────────────────────────────────────────────────
 export const getJobApplicantsService = async (jobId, cookieHeader) => {
   try {
     const headers = {};
@@ -92,18 +74,6 @@ export const getJobApplicantsService = async (jobId, cookieHeader) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// updateApplicationStatusService
-//
-// Called from recruiter client components (ApplicationStatusSelector).
-// Sends a PATCH request to change candidate application status.
-//
-// Parameters:
-//   - applicationId: The ID of the application document
-//   - status: New status string ("pending" | "reviewing" | "accepted" | "rejected")
-//
-// Returns: { success: true, message: "...", status: "..." }
-// ─────────────────────────────────────────────────────────────────────────────
 export const updateApplicationStatusService = async (applicationId, status) => {
   try {
     const response = await fetch(`${API_URL}/${applicationId}/status`, {

@@ -1,4 +1,3 @@
-// src/components/CreateCompanyForm.jsx
 "use client";
 
 import { useState } from "react";
@@ -56,21 +55,18 @@ export default function CreateCompanyForm() {
   return (
     <div className="border border-gray-200 p-8 sm:p-10 w-full max-w-md bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Success Banner */}
         {successMessage && (
           <div className="p-4 border-2 border-green-500 bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider">
             ✓ {successMessage}
           </div>
         )}
 
-        {/* Error Banner */}
         {errorMessage && (
           <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
             {errorMessage}
           </div>
         )}
 
-        {/* Company Name */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
             Company Name
@@ -85,7 +81,6 @@ export default function CreateCompanyForm() {
           />
         </div>
 
-        {/* Website URL */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
             Website URL
@@ -100,7 +95,6 @@ export default function CreateCompanyForm() {
           />
         </div>
 
-        {/* Description */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
             Description
@@ -115,7 +109,6 @@ export default function CreateCompanyForm() {
           ></textarea>
         </div>
 
-        {/* Submit Button */}
         <div className="pt-4">
           <button
             type="submit"

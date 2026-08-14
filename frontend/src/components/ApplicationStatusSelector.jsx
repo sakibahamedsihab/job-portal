@@ -1,17 +1,5 @@
 "use client";
 
-// src/components/ApplicationStatusSelector.jsx
-//
-// Interactive Status Selector for Recruiters
-//
-// Rules requested:
-//   1. Initial state (Pending): Recruiter sees 2 buttons: "Accept" and "Reject".
-//   2. Once an action is taken:
-//      - If "Accept" is clicked: Status becomes Accepted. The "Reject" button is hidden,
-//        and the "Accept" button becomes disabled showing "Accepted".
-//      - If "Reject" is clicked: Status becomes Rejected. The "Accept" button is hidden,
-//        and the "Reject" button becomes disabled showing "Rejected".
-
 import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { updateApplicationStatusService } from "@/lib/applications";
@@ -39,8 +27,6 @@ export default function ApplicationStatusSelector({ applicationId, initialStatus
 
   return (
     <div className="flex items-center gap-2">
-      {/* ── Accept Button ─────────────────────────────────────────────────── */}
-      {/* Hidden if candidate has already been rejected */}
       {!isRejected && (
         <button
           onClick={() => handleStatusChange("accepted")}
@@ -56,8 +42,6 @@ export default function ApplicationStatusSelector({ applicationId, initialStatus
         </button>
       )}
 
-      {/* ── Reject Button ─────────────────────────────────────────────────── */}
-      {/* Hidden if candidate has already been accepted */}
       {!isAccepted && (
         <button
           onClick={() => handleStatusChange("rejected")}

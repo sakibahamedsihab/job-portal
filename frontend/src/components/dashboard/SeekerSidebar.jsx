@@ -1,4 +1,3 @@
-// src/components/dashboard/SeekerSidebar.jsx
 "use client";
 
 import Link from "next/link";
@@ -7,7 +6,6 @@ import { usePathname } from "next/navigation";
 export default function SeekerSidebar() {
   const pathname = usePathname();
 
-  // Seeker Navigation items
   const navItems = [
     { name: "Overview", path: "/dashboard/seeker" },
     { name: "Applied Jobs", path: "/dashboard/seeker/applied-jobs" },

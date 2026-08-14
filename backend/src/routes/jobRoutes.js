@@ -8,10 +8,11 @@ const {
   getJobById,
 } = require("../controllers/jobControllers.js");
 const requireAuth = require("../middlewares/requireAuth.js");
+const roleCheck = require("../middlewares/roleCheck.js");
 
-router.post("/", requireAuth, createJob);
+router.post("/", requireAuth, roleCheck(["recruiter"]), createJob);
 router.get("/", getJobs);
-router.get("/me", requireAuth, getMyJobs);
+router.get("/me", requireAuth, roleCheck(["recruiter"]), getMyJobs);
 router.get("/:id", getJobById);
 
 module.exports = router;

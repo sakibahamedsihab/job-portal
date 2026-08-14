@@ -68,9 +68,6 @@ export default function HowItWorks() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Connector Line for Desktop */}
-          {/* <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-800 -translate-y-1/2 z-0"></div> */}
-
           {steps.map((step) => (
             <motion.div
               key={step.id}

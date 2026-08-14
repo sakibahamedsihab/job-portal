@@ -1,36 +1,30 @@
-// src/controllers/applicationControllers.js
-//
-// This file handles everything related to job applications.
-// There are 3 main actors:
-//   1. The SEEKER — applies to jobs, views their own applications
-//   2. The RECRUITER — views applicants who applied to their jobs, updates candidate status
-//
-// The "applications" MongoDB collection stores documents like:
-// {
-//   jobId:     ObjectId,   // which job was applied to
-//   seekerId:  string,     // Better Auth user ID of the seeker
-//   status:    string,     // "pending" | "reviewing" | "rejected" | "accepted"
-//   appliedAt: Date,       // when the seeker applied
-//   updatedAt: Date,       // last status change timestamp
-//
-//   // Denormalised fields
-//   jobTitle:     string,
-//   companyName:  string,
-//   seekerName:   string,
-//   seekerEmail:  string,
-// }
-
 const { getDB } = require("../config/db.js");
 const { ObjectId } = require("mongodb");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// applyToJob
-//
-// Called when a SEEKER hits "Apply" on a job detail page.
-// Route: POST /api/applications   (seeker only)
-// ─────────────────────────────────────────────────────────────────────────────
+function checkSeekerRole(req, res) {
+  if (req.user.role !== "seeker") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only job seekers can apply to jobs.",
+    });
+  }
+  return true;
+}
+
+function checkRecruiterRole(req, res) {
+  if (req.user.role !== "recruiter") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only recruiters can access this resource.",
+    });
+  }
+  return true;
+}
+
 const applyToJob = async (req, res) => {
   try {
+    if (!checkSeekerRole(req, res)) return;
+    
     const db = getDB();
     const seekerId = req.user.id;
     const { jobId } = req.body;
@@ -65,7 +59,10 @@ const applyToJob = async (req, res) => {
       });
     }
 
-    const seeker = await db.collection("user").findOne({ id: seekerId });
+    let seeker = null;
+    if (ObjectId.isValid(seekerId)) {
+      seeker = await db.collection("user").findOne({ _id: new ObjectId(seekerId) });
+    }
 
     const applicationPayload = {
       jobId: new ObjectId(jobId),
@@ -73,8 +70,8 @@ const applyToJob = async (req, res) => {
       status: "pending",
       jobTitle: job.title,
       companyName: job.companyName || job.company || "Company",
-      seekerName: seeker?.name || "Unknown Candidate",
-      seekerEmail: seeker?.email || "Unknown Email",
+      seekerName: seeker?.name || req.user.name || "Unknown Candidate",
+      seekerEmail: seeker?.email || req.user.email || "Unknown Email",
       appliedAt: new Date(),
     };
 
@@ -95,14 +92,10 @@ const applyToJob = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getMyApplications
-//
-// Called when a SEEKER visits their "Applied Jobs" dashboard page.
-// Route: GET /api/applications/me   (seeker only)
-// ─────────────────────────────────────────────────────────────────────────────
 const getMyApplications = async (req, res) => {
   try {
+    if (!checkSeekerRole(req, res)) return;
+    
     const db = getDB();
     const seekerId = req.user.id;
 
@@ -124,14 +117,10 @@ const getMyApplications = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getJobApplicants
-//
-// Called when a RECRUITER clicks "View Applicants" on one of their job posts.
-// Route: GET /api/applications/job/:jobId   (recruiter only)
-// ─────────────────────────────────────────────────────────────────────────────
 const getJobApplicants = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const db = getDB();
     const recruiterId = req.user.id;
     const { jobId } = req.params;
@@ -174,19 +163,10 @@ const getJobApplicants = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// updateApplicationStatus
-//
-// Called when a RECRUITER changes candidate status (Accept / Reject / Reviewing / Pending).
-// Route: PATCH /api/applications/:id/status   (recruiter only)
-// Body: { status: "pending" | "reviewing" | "accepted" | "rejected" }
-//
-// Security check:
-//   - Verifies the candidate application exists
-//   - Verifies the job belongs to the logged-in recruiter (prevents modifying unauthorized applications)
-// ─────────────────────────────────────────────────────────────────────────────
 const updateApplicationStatus = async (req, res) => {
   try {
+    if (!checkRecruiterRole(req, res)) return;
+    
     const db = getDB();
     const recruiterId = req.user.id;
     const { id } = req.params;
@@ -210,7 +190,6 @@ const updateApplicationStatus = async (req, res) => {
 
     const formattedStatus = status.toLowerCase();
 
-    // 1. Find the application document
     const application = await db.collection("applications").findOne({
       _id: new ObjectId(id),
     });
@@ -222,7 +201,6 @@ const updateApplicationStatus = async (req, res) => {
       });
     }
 
-    // 2. Security check: confirm the recruiter owns the job for this application
     const job = await db.collection("jobs").findOne({
       _id: new ObjectId(application.jobId),
       recruiterId,
@@ -235,7 +213,6 @@ const updateApplicationStatus = async (req, res) => {
       });
     }
 
-    // 3. Update status in MongoDB
     await db.collection("applications").updateOne(
       { _id: new ObjectId(id) },
       {

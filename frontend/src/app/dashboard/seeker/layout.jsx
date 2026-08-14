@@ -1,28 +1,23 @@
-// src/app/dashboard/seeker/layout.jsx
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import SidebarNav from "@/components/dashboard/SeekerSidebar";
 
 export default async function SeekerLayout({ children }) {
-  // Read the session server-side using Better Auth
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
-  // Not logged in → send to login page
   if (!session) {
     redirect("/login");
   }
 
-  // Wrong role (recruiter visiting seeker dashboard) → send to their dashboard
   if (session.user.role === "recruiter") {
     redirect("/dashboard/recruiter");
   }
 
   return (
     <div className="flex min-h-screen bg-white">
-      {/* Left Sidebar */}
       <aside className="w-64 border-r border-gray-200 flex flex-col bg-white">
         <div className="p-8 border-b border-gray-200">
           <h2 className="text-xl font-extrabold text-black uppercase tracking-widest">
@@ -32,7 +27,6 @@ export default async function SeekerLayout({ children }) {
         <SidebarNav />
       </aside>
 
-      {/* Main Content Area */}
       <main className="flex-1 bg-white relative">{children}</main>
     </div>
   );

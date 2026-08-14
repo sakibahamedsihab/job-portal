@@ -3,6 +3,8 @@ import { getJobByIdService } from "@/lib/jobs";
 import ApplyButton from "@/components/ApplyButton";
 import BookmarkButton from "@/components/BookmarkButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function JobDetailsPage({ params }) {
   const { id } = await params;
   
@@ -20,7 +22,6 @@ export default async function JobDetailsPage({ params }) {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
       <div className="max-w-3xl mx-auto bg-white p-8 shadow-sm border border-gray-200">
-        {/* Back button */}
         <Link
           href="/jobs"
           className="text-sm font-bold text-gray-500 hover:text-black mb-6 inline-block"
@@ -28,7 +29,6 @@ export default async function JobDetailsPage({ params }) {
           ← Back to Jobs
         </Link>
 
-        {/* Job Header */}
         <h1 className="text-3xl font-extrabold text-black uppercase mb-2">
           {job.title}
         </h1>
@@ -40,7 +40,6 @@ export default async function JobDetailsPage({ params }) {
           Salary: {job.salary}
         </div>
 
-        {/* Job Description */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-black uppercase mb-3">
             Job Description
@@ -48,7 +47,6 @@ export default async function JobDetailsPage({ params }) {
           <p className="text-gray-600 leading-relaxed">{job.description}</p>
         </div>
 
-        {/* Requirements */}
         {job.requirements && job.requirements.length > 0 && (
           <div>
             <h3 className="text-lg font-bold text-black uppercase mb-3">
@@ -62,7 +60,6 @@ export default async function JobDetailsPage({ params }) {
           </div>
         )}
 
-        {/* Actions: Apply & Bookmark */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-10">
           <div className="flex-1">
             <ApplyButton jobId={job._id.toString()} />

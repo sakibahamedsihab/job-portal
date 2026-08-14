@@ -1,11 +1,9 @@
-// src/app/dashboard/recruiter/my-company/create/page.jsx
 import Link from "next/link";
 import CreateCompanyForm from "./CreateCompanyForm";
 
 export default function CreateCompanyPage() {
   return (
     <div className="flex flex-col items-center pt-10 min-h-screen bg-white px-4">
-      {/* Back Button */}
       <div className="w-full max-w-md mb-6">
         <Link
           href="/dashboard/recruiter/my-company"
@@ -24,7 +22,6 @@ export default function CreateCompanyPage() {
         </h1>
       </div>
 
-      {/* আমাদের ফর্ম কম্পোনেন্ট */}
       <CreateCompanyForm />
     </div>
   );

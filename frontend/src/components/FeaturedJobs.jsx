@@ -1,10 +1,5 @@
 "use client";
 
-// src/components/FeaturedJobs.jsx
-//
-// Dynamic Featured Jobs section on Homepage
-// Fetches real jobs from backend GET /api/jobs and displays top 4 jobs.
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -22,7 +17,6 @@ export default function FeaturedJobs() {
       try {
         const res = await getJobsService();
         if (isMounted && res?.success && Array.isArray(res.jobs)) {
-          // Take the 4 most recently posted jobs
           setJobs(res.jobs.slice(0, 4));
         }
       } catch (error) {
@@ -80,7 +74,6 @@ export default function FeaturedJobs() {
           </Link>
         </div>
 
-        {/* Loading state skeleton */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[1, 2, 3, 4].map((i) => (

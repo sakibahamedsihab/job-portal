@@ -1,11 +1,5 @@
-// src/lib/savedJobs.js
-// Frontend service functions for Saved / Bookmarked Jobs feature.
-
 const API_URL = "http://localhost:5000/api/saved-jobs";
 
-/**
- * Toggle bookmarking a job (Save or Unsave)
- */
 export const toggleSaveJobService = async (jobId) => {
   try {
     const response = await fetch(`${API_URL}/toggle`, {
@@ -24,9 +18,6 @@ export const toggleSaveJobService = async (jobId) => {
   }
 };
 
-/**
- * Get all saved jobs for current logged-in seeker
- */
 export const getMySavedJobsService = async (cookieHeader) => {
   try {
     const headers = {};
@@ -51,9 +42,6 @@ export const getMySavedJobsService = async (cookieHeader) => {
   }
 };
 
-/**
- * Check if a job is bookmarked by current user
- */
 export const checkIsJobSavedService = async (jobId) => {
   try {
     const response = await fetch(`${API_URL}/check/${jobId}`, {

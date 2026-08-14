@@ -1,22 +1,20 @@
-// backend/src/controllers/savedJobControllers.js
-//
-// Controller for the Saved / Bookmarked Jobs feature.
-// Allows Job Seekers to save jobs they are interested in, remove them,
-// and view their list of saved jobs.
-
 const { getDB } = require("../config/db.js");
 const { ObjectId } = require("mongodb");
 
-// ─────────────────────────────────────────────────────────────────────────────
-// toggleSaveJob
-// Route: POST /api/saved-jobs/toggle (Seeker only)
-// Body: { jobId }
-//
-// If the job is already saved by this seeker, it removes (unsaves) it.
-// If the job is not saved, it saves it into the "saved_jobs" collection.
-// ─────────────────────────────────────────────────────────────────────────────
+function checkSeekerRole(req, res) {
+  if (req.user.role !== "seeker") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only job seekers can save/unsave jobs.",
+    });
+  }
+  return true;
+}
+
 const toggleSaveJob = async (req, res) => {
   try {
+    if (!checkSeekerRole(req, res)) return;
+    
     const db = getDB();
     const seekerId = req.user.id;
     const { jobId } = req.body;
@@ -30,14 +28,12 @@ const toggleSaveJob = async (req, res) => {
 
     const jobObjectId = new ObjectId(jobId);
 
-    // Check if this job is already saved by the user
     const existingBookmark = await db.collection("saved_jobs").findOne({
       seekerId,
       jobId: jobObjectId,
     });
 
     if (existingBookmark) {
-      // Unsave (Remove bookmark)
       await db.collection("saved_jobs").deleteOne({
         seekerId,
         jobId: jobObjectId,
@@ -50,7 +46,6 @@ const toggleSaveJob = async (req, res) => {
       });
     }
 
-    // Verify job exists before saving
     const job = await db.collection("jobs").findOne({ _id: jobObjectId });
     if (!job) {
       return res.status(404).json({
@@ -59,7 +54,6 @@ const toggleSaveJob = async (req, res) => {
       });
     }
 
-    // Save job (Bookmark)
     const payload = {
       seekerId,
       jobId: jobObjectId,
@@ -86,14 +80,10 @@ const toggleSaveJob = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getMySavedJobs
-// Route: GET /api/saved-jobs/me (Seeker only)
-//
-// Fetches all saved jobs for the logged-in seeker, sorted newest first.
-// ─────────────────────────────────────────────────────────────────────────────
 const getMySavedJobs = async (req, res) => {
   try {
+    if (!checkSeekerRole(req, res)) return;
+    
     const db = getDB();
     const seekerId = req.user.id;
 
@@ -116,14 +106,10 @@ const getMySavedJobs = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// checkIsJobSaved
-// Route: GET /api/saved-jobs/check/:jobId (Seeker only)
-//
-// Checks whether a specific job is already saved by the current user.
-// ─────────────────────────────────────────────────────────────────────────────
 const checkIsJobSaved = async (req, res) => {
   try {
+    if (!checkSeekerRole(req, res)) return;
+    
     const db = getDB();
     const seekerId = req.user.id;
     const { jobId } = req.params;

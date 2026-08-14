@@ -1,11 +1,3 @@
-// src/app/dashboard/seeker/page.jsx
-//
-// Seeker Overview — a server component that fetches real data:
-//   - The logged-in user's name (from Better Auth session, via auth.api.getSession)
-//   - Their actual number of applications (from the backend)
-//   - Their actual number of saved jobs (from the backend)
-//   - Their 3 most recent applications for the "Recent Activity" list
-
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { Briefcase, Bookmark, ChevronRight } from "lucide-react";
@@ -13,7 +5,6 @@ import { auth } from "@/lib/auth";
 import { getMyApplicationsService } from "@/lib/applications";
 import { getMySavedJobsService } from "@/lib/savedJobs";
 
-// ── Status badge colour map ──────────────────────────────────────────────────
 const STATUS_STYLES = {
   pending:   "bg-gray-50 text-gray-600 border-gray-200",
   reviewing: "bg-yellow-50 text-yellow-700 border-yellow-200",
@@ -23,11 +14,9 @@ const STATUS_STYLES = {
 };
 
 export default async function SeekerDashboardOverview() {
-  // ── Step 1: Get the session to read the user's name ─────────────────────────
   const session = await auth.api.getSession({ headers: await headers() });
   const userName = session?.user?.name ?? "there";
 
-  // ── Step 2: Fetch applications and saved jobs from backend ─────────────────
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
 
@@ -39,7 +28,6 @@ export default async function SeekerDashboardOverview() {
   const applications = appResult?.applications ?? [];
   const savedJobs = savedResult?.savedJobs ?? [];
 
-  // ── Step 3: Derive stats from the data ───────────────────────────────────────
   const totalApplied = applications.length;
   const totalSaved = savedJobs.length;
   const recentApplications = applications.slice(0, 3);
@@ -47,7 +35,6 @@ export default async function SeekerDashboardOverview() {
   return (
     <main className="max-w-5xl mx-auto p-6 md:p-8 space-y-8">
 
-      {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div>
         <h1 className="text-3xl font-light text-gray-900 tracking-tight">
           Welcome back, <span className="font-semibold">{userName}</span>
@@ -57,9 +44,7 @@ export default async function SeekerDashboardOverview() {
         </p>
       </div>
 
-      {/* ── Quick Stats ─────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Applied Jobs */}
         <Link
           href="/dashboard/seeker/applied-jobs"
           className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group"
@@ -73,7 +58,6 @@ export default async function SeekerDashboardOverview() {
           </div>
         </Link>
 
-        {/* Saved Jobs */}
         <Link
           href="/dashboard/seeker/saved-jobs"
           className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-between group"
@@ -88,7 +72,6 @@ export default async function SeekerDashboardOverview() {
         </Link>
       </div>
 
-      {/* ── Recent Applications ──────────────────────────────────────────────── */}
       <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-medium text-gray-900">Recent Applications</h2>
@@ -100,7 +83,6 @@ export default async function SeekerDashboardOverview() {
           </Link>
         </div>
 
-        {/* ── Empty state ───────────────────────────────────────────────────── */}
         {recentApplications.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-sm text-gray-400 mb-4">

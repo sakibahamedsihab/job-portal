@@ -1,10 +1,8 @@
-// src/app/dashboard/recruiter/my-company/component.jsx
 import Link from "next/link";
 
 export default function CompanyDisplay({ company }) {
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen">
-      {/* Header Section */}
       <div className="border-b border-gray-200 pb-6 mb-10">
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
           Overview

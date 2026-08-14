@@ -1,4 +1,3 @@
-// src/components/CreateJobForm.jsx
 "use client";
 
 import { useState } from "react";
@@ -49,14 +48,12 @@ export default function CreateJobForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Error Feedback Banner */}
       {errorMessage && (
         <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
           {errorMessage}
         </div>
       )}
 
-      {/* Job Title */}
       <div className="space-y-2">
         <label className="block text-xs font-bold text-black uppercase tracking-wider">
           Job Title
@@ -73,7 +70,6 @@ export default function CreateJobForm() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Location */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
             Location
@@ -89,7 +85,6 @@ export default function CreateJobForm() {
           />
         </div>
 
-        {/* Salary */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-black uppercase tracking-wider">
             Salary Range
@@ -106,7 +101,6 @@ export default function CreateJobForm() {
         </div>
       </div>
 
-      {/* Description */}
       <div className="space-y-2">
         <label className="block text-xs font-bold text-black uppercase tracking-wider">
           Job Description
@@ -122,7 +116,6 @@ export default function CreateJobForm() {
         ></textarea>
       </div>
 
-      {/* Submit Button */}
       <div className="pt-4">
         <button
           type="submit"

@@ -1,4 +1,3 @@
-// src/app/dashboard/seeker/saved-jobs/page.jsx
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { Bookmark, ExternalLink } from "lucide-react";
@@ -14,7 +13,6 @@ export default async function SavedJobsPage() {
 
   return (
     <div className="pt-10 px-8 sm:px-12 w-full bg-white min-h-screen pb-20">
-      {/* Header Section */}
       <div className="border-b border-gray-200 pb-6 mb-10">
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
           My Activity
@@ -27,7 +25,6 @@ export default async function SavedJobsPage() {
         </p>
       </div>
 
-      {/* Empty State vs List */}
       {savedJobs.length === 0 ? (
         <div className="border border-gray-200 p-16 text-center bg-gray-50 flex flex-col items-center justify-center">
           <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">

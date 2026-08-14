@@ -9,12 +9,13 @@ import Link from "next/link";
 export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "seeker", // default role
+    role: "seeker",
   });
 
   const handleChange = (e) => {
@@ -22,28 +23,31 @@ export default function RegisterPage() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    if (errorMessage) setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage("");
+
+    const userRole = formData.role === "recruiter" ? "recruiter" : "seeker";
 
     const { data, error } = await signUp.email({
       email: formData.email,
       password: formData.password,
       name: formData.name,
-      role: formData.role,
+      role: userRole,
     });
 
     if (error) {
       console.error("Sign up failed: ", error.message);
-      alert("Failed to sign up: " + error.message);
+      setErrorMessage(error.message || "Failed to create account.");
       setIsLoading(false);
     } else {
       console.log("User created successfully:", data);
-      // Redirect to the correct dashboard based on the selected role
       const destination =
-        formData.role === "recruiter"
+        userRole === "recruiter"
           ? "/dashboard/recruiter"
           : "/dashboard/seeker";
       router.push(destination);
@@ -64,8 +68,12 @@ export default function RegisterPage() {
 
         <div className="border border-gray-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {errorMessage && (
+              <div className="p-4 border-2 border-red-500 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider">
+                {errorMessage}
+              </div>
+            )}
 
-            {/* Role Selector */}
             <div>
               <label className="block text-xs font-bold tracking-wide text-black uppercase mb-3">
                 I am a...
@@ -74,7 +82,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, role: "seeker" })}
-                  className={`py-3 border-2 text-sm font-bold uppercase tracking-widest transition-colors ${
+                  className={`py-3 border-2 text-xs font-bold uppercase tracking-widest transition-colors ${
                     formData.role === "seeker"
                       ? "border-black bg-black text-white"
                       : "border-gray-200 text-gray-500 hover:border-gray-400"
@@ -85,7 +93,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, role: "recruiter" })}
-                  className={`py-3 border-2 text-sm font-bold uppercase tracking-widest transition-colors ${
+                  className={`py-3 border-2 text-xs font-bold uppercase tracking-widest transition-colors ${
                     formData.role === "recruiter"
                       ? "border-black bg-black text-white"
                       : "border-gray-200 text-gray-500 hover:border-gray-400"
@@ -96,7 +104,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Full Name */}
             <div>
               <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
                 Full Name
@@ -111,7 +118,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
                 Email Address
@@ -126,7 +132,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-xs font-bold tracking-wide text-black uppercase mb-2">
                 Password
