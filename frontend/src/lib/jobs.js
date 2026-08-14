@@ -68,3 +68,33 @@ export const getJobByIdService = async (id) => {
     return { success: false, job: null };
   }
 };
+
+export const updateJobService = async (id, payload) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error Updating Job: ", error);
+    return { success: false, message: "Failed to update job" };
+  }
+};
+
+export const deleteJobService = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error Deleting Job: ", error);
+    return { success: false, message: "Failed to delete job" };
+  }
+};

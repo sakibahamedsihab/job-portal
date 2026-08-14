@@ -358,7 +358,81 @@ async function runTestSuite() {
     });
     assert(invalidStatusRes.status === 400, "Invalid application status rejected with 400");
 
-    console.log("\n--- 6. Admin Management & Moderation ---");
+    console.log("\n--- 6. Recruiter Job Edit & Delete ---");
+    // Recruiter 2 attempts to edit Recruiter 1's job -> 403
+    const unauthEditRes = await request(`/api/jobs/${createdJobId}`, {
+      method: "PUT",
+      headers: { Cookie: recruiter2Cookie },
+      body: { title: "Hacked Job Title" },
+    });
+    assert(unauthEditRes.status === 403, "Recruiter 2 cannot edit Recruiter 1's job post (403)");
+
+    // Recruiter 1 updates their own job post
+    const editJobRes = await request(`/api/jobs/${createdJobId}`, {
+      method: "PUT",
+      headers: { Cookie: recruiterCookie },
+      body: {
+        title: "Lead Full Stack Engineer",
+        salary: "$150,000 - $180,000",
+        location: "San Francisco, CA",
+      },
+    });
+    assert(editJobRes.status === 200 && editJobRes.body?.success === true, "Recruiter edits their posted job successfully");
+
+    // Verify updated details
+    const verifyEditRes = await request(`/api/jobs/${createdJobId}`);
+    assert(
+      verifyEditRes.status === 200 &&
+        verifyEditRes.body?.job?.title === "Lead Full Stack Engineer" &&
+        verifyEditRes.body?.job?.salary === "$150,000 - $180,000" &&
+        verifyEditRes.body?.job?.location === "San Francisco, CA",
+      "Get job by ID confirms edited fields were saved"
+    );
+
+    // Create a secondary job for Recruiter 1 to test deletion & cascade
+    const tempJobRes = await request("/api/jobs", {
+      method: "POST",
+      headers: { Cookie: recruiterCookie },
+      body: {
+        title: "Temporary Job To Delete",
+        category: "Design",
+        jobType: "Contract",
+        location: "Remote",
+        salary: "$80k",
+        description: "Will be deleted soon.",
+      },
+    });
+    const tempJobId = tempJobRes.body?.jobId;
+
+    // Seeker applies to temp job
+    const tempAppRes = await request("/api/applications", {
+      method: "POST",
+      headers: { Cookie: seekerCookie },
+      body: { jobId: tempJobId },
+    });
+    const tempAppId = tempAppRes.body?.applicationId;
+
+    // Recruiter 2 attempts to delete Recruiter 1's job -> 403
+    const unauthDeleteJobRes = await request(`/api/jobs/${tempJobId}`, {
+      method: "DELETE",
+      headers: { Cookie: recruiter2Cookie },
+    });
+    assert(unauthDeleteJobRes.status === 403, "Recruiter 2 cannot delete Recruiter 1's job post (403)");
+
+    // Recruiter 1 deletes their own job
+    const deleteOwnJobRes = await request(`/api/jobs/${tempJobId}`, {
+      method: "DELETE",
+      headers: { Cookie: recruiterCookie },
+    });
+    assert(deleteOwnJobRes.status === 200 && deleteOwnJobRes.body?.success === true, "Recruiter deletes their own job post successfully");
+
+    // Verify temp job and its application were deleted from DB
+    const checkDeletedJob = await db.collection("jobs").findOne({ _id: new ObjectId(tempJobId) });
+    const checkDeletedApp = await db.collection("applications").findOne({ _id: new ObjectId(tempAppId) });
+    assert(!checkDeletedJob, "Deleted job is completely removed from database");
+    assert(!checkDeletedApp, "Cascade cleanup removed associated application records");
+
+    console.log("\n--- 7. Admin Management & Moderation ---");
     // Admin Stats
     const adminStatsRes = await request("/api/admin/stats", {
       headers: { Cookie: adminCookie },
