@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ImageUploader from "@/components/ImageUploader";
 import { createCompanyService } from "@/lib/companies";
 
 export default function CreateCompanyForm() {
@@ -10,6 +11,7 @@ export default function CreateCompanyForm() {
     name: "",
     website: "",
     description: "",
+    logo: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +38,7 @@ export default function CreateCompanyForm() {
 
       if (response.success) {
         setSuccessMessage("Company profile created successfully!");
-        setFormData({ name: "", website: "", description: "" });
+        setFormData({ name: "", website: "", description: "", logo: "" });
         setTimeout(() => {
           router.push("/dashboard/recruiter/my-company");
           router.refresh();
@@ -66,6 +68,15 @@ export default function CreateCompanyForm() {
             {errorMessage}
           </div>
         )}
+
+        {/* Company Logo Image Uploader */}
+        <ImageUploader
+          label="Company Logo"
+          value={formData.logo}
+          onChange={(url) => setFormData((prev) => ({ ...prev, logo: url }))}
+          aspectRatio="square"
+          helperText="Upload official company logo (PNG, JPG, SVG)"
+        />
 
         <div className="space-y-2">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">

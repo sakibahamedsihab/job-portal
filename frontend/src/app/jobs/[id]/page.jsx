@@ -94,25 +94,42 @@ export default async function JobDetailsPage({ params }) {
               )}
             </div>
 
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-              {job.title}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-6 text-sm font-semibold text-gray-600">
-              <span className="flex items-center gap-1.5 text-gray-900 font-bold">
-                <Building size={16} className="text-gray-400" />
-                {company}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <MapPin size={16} className="text-gray-400" />
-                {job.location}
-              </span>
-              {postedDate && (
-                <span className="flex items-center gap-1.5 text-gray-400 text-xs">
-                  <Clock size={14} />
-                  Posted {postedDate}
-                </span>
+            <div className="flex items-center gap-4">
+              {job.companyLogo ? (
+                <div className="w-16 h-16 rounded-2xl border border-gray-200 bg-white p-1 overflow-hidden flex items-center justify-center shadow-sm flex-shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={job.companyLogo}
+                    alt={company}
+                    className="w-full h-full object-contain rounded-xl"
+                  />
+                </div>
+              ) : (
+                <div className="w-16 h-16 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-extrabold text-2xl shadow-sm flex-shrink-0">
+                  {(company[0] || "C").toUpperCase()}
+                </div>
               )}
+              <div>
+                <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                  {job.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-gray-600 mt-1">
+                  <span className="flex items-center gap-1.5 text-gray-900 font-bold">
+                    <Building size={15} className="text-gray-400" />
+                    {company}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={15} className="text-gray-400" />
+                    {job.location}
+                  </span>
+                  {postedDate && (
+                    <span className="flex items-center gap-1.5 text-gray-400 text-xs">
+                      <Clock size={13} />
+                      Posted {postedDate}
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 

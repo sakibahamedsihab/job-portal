@@ -172,7 +172,7 @@ const updateApplicationStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const ALLOWED_STATUSES = ["pending", "reviewing", "accepted", "rejected"];
+    const ALLOWED_STATUSES = ["pending", "reviewing", "interview", "accepted", "rejected"];
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({

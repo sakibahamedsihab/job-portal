@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createCompanyService } from "@/lib/companies";
+import ImageUploader from "@/components/ImageUploader";
 
 export default function CreateCompanyForm() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function CreateCompanyForm() {
     name: "",
     website: "",
     description: "",
+    logo: "",
   });
 
   const handleChange = (e) => {
@@ -43,7 +45,7 @@ export default function CreateCompanyForm() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8 sm:p-10 w-full max-w-md">
+    <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-8 sm:p-10 w-full max-w-lg">
       <form onSubmit={handleSubmit} className="space-y-5">
         {errorMessage && (
           <div className="p-4 border border-red-300 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider rounded-2xl">
@@ -51,9 +53,18 @@ export default function CreateCompanyForm() {
           </div>
         )}
 
+        {/* Company Logo Upload */}
+        <ImageUploader
+          label="Company Logo"
+          value={formData.logo}
+          onChange={(url) => setFormData((prev) => ({ ...prev, logo: url }))}
+          aspectRatio="square"
+          helperText="Upload official company logo (PNG, JPG, SVG)"
+        />
+
         <div className="space-y-2">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
-            Company Name
+            Company Name *
           </label>
           <input
             type="text"
@@ -68,7 +79,7 @@ export default function CreateCompanyForm() {
 
         <div className="space-y-2">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
-            Website URL
+            Website URL *
           </label>
           <input
             type="url"
@@ -83,7 +94,7 @@ export default function CreateCompanyForm() {
 
         <div className="space-y-2">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider">
-            Description
+            Description *
           </label>
           <textarea
             name="description"

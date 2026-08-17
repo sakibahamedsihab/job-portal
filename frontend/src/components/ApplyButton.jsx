@@ -13,6 +13,8 @@ export default function ApplyButton({ jobId }) {
   const userRole = session?.user?.role || "guest";
   const canApply = userRole === "seeker";
 
+
+
   const roleMessages = {
     admin: {
       icon: Shield,
@@ -39,7 +41,7 @@ export default function ApplyButton({ jobId }) {
 
   const handleApply = async () => {
     if (!canApply) return;
-    
+
     setState("loading");
 
     const result = await applyToJobService(jobId);
@@ -107,11 +109,15 @@ export default function ApplyButton({ jobId }) {
     return (
       <div className={`w-full p-4 border rounded-2xl ${roleInfo.color}`}>
         <div className="flex items-center gap-3">
-          <div className={`p-2 ${roleInfo.color.replace("bg-", "bg-").replace("50", "100")} rounded-xl`}>
+          <div
+            className={`p-2 ${roleInfo.color.replace("bg-", "bg-").replace("50", "100")} rounded-xl`}
+          >
             <Icon size={20} className={roleInfo.iconColor} />
           </div>
           <div className="flex-1 text-left">
-            <p className="font-bold text-sm uppercase tracking-wide">{roleInfo.title}</p>
+            <p className="font-bold text-sm uppercase tracking-wide">
+              {roleInfo.title}
+            </p>
             <p className="text-xs mt-1 opacity-80">{roleInfo.desc}</p>
           </div>
         </div>
@@ -121,7 +127,8 @@ export default function ApplyButton({ jobId }) {
               href="/register"
               className="w-full block text-center py-2.5 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-gray-800 transition-colors"
             >
-              Create Seeker Account <ArrowRight size={14} className="inline ml-1" />
+              Create Seeker Account{" "}
+              <ArrowRight size={14} className="inline ml-1" />
             </a>
           </div>
         )}

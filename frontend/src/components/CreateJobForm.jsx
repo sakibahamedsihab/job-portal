@@ -198,7 +198,7 @@ export default function CreateJobForm() {
               name="location"
               value={jobData.location}
               onChange={handleChange}
-              placeholder="e.g. San Francisco, CA or Remote"
+              placeholder="e.g. Gulshan-2, Dhaka or Banani or Remote (BD)"
               required
               className="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 focus:bg-white focus:border-black focus:outline-none rounded-xl text-gray-900 transition-all"
             />
@@ -213,7 +213,7 @@ export default function CreateJobForm() {
               name="salary"
               value={jobData.salary}
               onChange={handleChange}
-              placeholder="e.g. $110,000 - $140,000 / yr"
+              placeholder="e.g. ৳80,000 - ৳1,20,000 / month"
               required
               className="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 focus:bg-white focus:border-black focus:outline-none rounded-xl text-gray-900 transition-all"
             />

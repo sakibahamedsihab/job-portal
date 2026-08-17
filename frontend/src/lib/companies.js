@@ -55,3 +55,21 @@ export const getMyCompanyService = async (cookieHeader) => {
     return { success: false, company: null };
   }
 };
+
+export const updateCompanyService = async (companyData) => {
+  try {
+    const response = await fetch(`${API_URL}/me`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(companyData),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error("Frontend Error (updateCompanyService):", error);
+    return { success: false, message: "Network error occurred." };
+  }
+};

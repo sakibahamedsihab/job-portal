@@ -84,6 +84,7 @@ const createJob = async (req, res) => {
       recruiterId,
       companyId: company._id,
       companyName: company.name,
+      companyLogo: company.logo || "",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

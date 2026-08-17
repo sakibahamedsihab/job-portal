@@ -28,7 +28,7 @@ export default async function AdminOverviewPage() {
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md hover:border-black transition-all flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
@@ -39,7 +39,7 @@ export default async function AdminOverviewPage() {
               {stats.seekerCount} Seekers • {stats.recruiterCount} Recruiters
             </p>
           </div>
-          <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
             <Users size={28} />
           </div>
         </div>
@@ -51,7 +51,7 @@ export default async function AdminOverviewPage() {
             </p>
             <h2 className="text-4xl font-extrabold text-gray-900">{stats.totalJobs}</h2>
           </div>
-          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
             <Briefcase size={28} />
           </div>
         </div>
@@ -63,8 +63,20 @@ export default async function AdminOverviewPage() {
             </p>
             <h2 className="text-4xl font-extrabold text-gray-900">{stats.totalApplications}</h2>
           </div>
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
             <FileText size={28} />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md hover:border-black transition-all flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+              Total Companies
+            </p>
+            <h2 className="text-4xl font-extrabold text-gray-900">{stats.totalCompanies}</h2>
+          </div>
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+            <Building size={28} />
           </div>
         </div>
       </div>

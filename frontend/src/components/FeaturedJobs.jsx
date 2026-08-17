@@ -126,9 +126,20 @@ export default function FeaturedJobs() {
                     <div>
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-xl bg-gray-900 text-white flex items-center justify-center font-extrabold text-lg shadow-sm group-hover:scale-105 transition-transform">
-                            {companyInitial}
-                          </div>
+                          {job.companyLogo ? (
+                            <div className="w-12 h-12 rounded-xl border border-gray-200 bg-white p-1 overflow-hidden flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={job.companyLogo}
+                                alt={company}
+                                className="w-full h-full object-contain rounded-lg"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-xl bg-gray-900 text-white flex items-center justify-center font-extrabold text-lg shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                              {companyInitial}
+                            </div>
+                          )}
                           <div>
                             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1">
                               <Building size={12} className="text-gray-400" />
